@@ -132,6 +132,9 @@ table {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
 }
+.hidden{
+  display: none;
+}
 /* --------------------- App Css --------------------- **/
 html {
   -webkit-box-sizing: border-box;
@@ -147,21 +150,23 @@ html {
 
 body {
   font-family: Tahoma, Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)
-    no-repeat;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
   font-size: 1.6rem;
   line-height: 1.6;
   color: #fff;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
 }
 .container {
   width: 80%;
   height: 80%;
   border-radius: 2rem;
   background-color: var(--section-color);
-  /* position: relative; */
 }
 button{
   cursor: pointer;
@@ -250,4 +255,23 @@ button{
 }
 .header__filter-btn:active {
   transform: scale(0.95);
+}
+/* --------------------- Main --------------------- **/
+#main{
+  margin-top: 2rem;
+}
+/* --------------------- Main Empty State --------------------- **/
+.main__empty-state{
+  text-align: center;
+  margin-top: 7rem;
+}
+.main__empty-state > span{
+  font-size: 7rem;  
+}
+.main__title{
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+.main__caption{
+  font-size: 2.3rem;
 }
