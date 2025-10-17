@@ -1,46 +1,136 @@
 /* --------------------- Reset Css --------------------- **/
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 body {
-	line-height: 1;
+  line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* --------------------- Helper class --------------------- **/
+.glass-card{
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
 }
 /* --------------------- App Css --------------------- **/
 html {
@@ -56,7 +146,108 @@ html {
 }
 
 body {
-  font-family: sans-serif;
+  font-family: Tahoma, Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)
+    no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
   font-size: 1.6rem;
   line-height: 1.6;
+  color: #fff;
+}
+.container {
+  width: 80%;
+  height: 80%;
+  border-radius: 2rem;
+  background-color: var(--section-color);
+  /* position: relative; */
+}
+button{
+  cursor: pointer;
+  color: #fff;
+  opacity: 0.95;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* --------------------- Header --------------------- **/
+#header {
+  width: 100%;
+  margin-top: 2.5rem;
+  text-align: center;
+  opacity: 0.95;
+}
+/* --------------------- Header top wrapper --------------------- **/
+.header__title {
+  font-size: 4.5rem;
+  font-weight: 900;
+}
+.header__caption {
+  margin-top: 0.5rem;
+  font-size: 2.4rem;
+}
+/* --------------------- Header center wrapper --------------------- **/
+.header__center-wrapper {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* --------------------- Header Stats Card --------------------- **/
+.header__stats-cards {
+  display: flex;
+  gap: 1rem;
+}
+/* --------------------- Header Create Btn --------------------- **/
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(255,255,255,0.3); 
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(255,255,255,0.6); 
+  }
+}
+.header__create-btn{
+  width: 25rem;
+  padding: 12px 24px;
+  animation: pulse-glow 2s infinite;
+  transition: all 0.3s ease;
+}
+.header__create-btn:hover{
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+/* --------------------- Header Bottom Wrapper --------------------- **/
+.header__bottom-wrapper{
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+/* --------------------- Header Filter Btns --------------------- **/
+@keyframes active-glow {
+  0% { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+  100% { box-shadow: 0 0 25px rgba(255,255,255,0.5); }
+}
+.header__filter-btn{
+  padding: 1.2rem 3rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.header__filter-btn:hover{
+    background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.header__filter-btn.active {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  animation: active-glow 1.5s infinite alternate;
+}
+.header__filter-btn:active {
+  transform: scale(0.95);
 }
