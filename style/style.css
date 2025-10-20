@@ -147,7 +147,10 @@ html {
 *::after {
   box-sizing: inherit;
 }
-
+svg{
+  width: 30px;
+  height: 30px;
+}
 body {
   font-family: Tahoma, Arial, sans-serif;
   font-size: 1.6rem;
@@ -243,7 +246,7 @@ button{
   overflow: hidden;
 }
 .header__filter-btn:hover{
-    background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
@@ -274,4 +277,57 @@ button{
 }
 .main__caption{
   font-size: 2.3rem;
+}
+/* --------------------- Main Books --------------------- **/
+.main__books{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  color: black;
+}
+.main-book{
+  background-color: #fff;
+  width: 30%;
+  padding: 2rem;
+  margin-top: 2rem;
+  border-radius: 3rem;
+  overflow-wrap: break-word;
+}
+.main-book:hover{
+  transform: scale(1.02);
+  
+}
+/* --------------------- Main Book header --------------------- **/
+.main-book__header{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.main-book__header-text{
+  max-width: 84%;  
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+.main-book__header-icons{
+  min-width: 7rem;  
+  max-width: 7rem;  
+}
+.main-book__del-icon,
+.main-book__edit-icon{
+  cursor: pointer;
+}
+/* --------------------- Main Book Author --------------------- **/
+.main-book__author{
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+/* --------------------- Main Book Bottom Wrapper --------------------- **/
+.main-book__bottom-wrapper{
+  display: flex;
+  justify-content: space-between;
+}
+.main-book__status{
+  background-color:#f093fb;
+  padding: 0.5rem 2rem;
+  border-radius: 10rem;
 }
