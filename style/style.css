@@ -124,7 +124,7 @@ table {
   border-spacing: 0;
 }
 /* --------------------- Helper class --------------------- **/
-.glass-card{
+.glass-card {
   padding: 1rem;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
@@ -132,8 +132,8 @@ table {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
 }
-.hidden{
-  display: none;
+.hidden {
+  display: none !important;
 }
 /* --------------------- App Css --------------------- **/
 html {
@@ -147,7 +147,7 @@ html {
 *::after {
   box-sizing: inherit;
 }
-svg{
+svg {
   width: 30px;
   height: 30px;
 }
@@ -158,7 +158,8 @@ body {
   color: #fff;
   min-height: 100vh;
   margin: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) no-repeat;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)
+    no-repeat;
   background-attachment: scroll;
   background-size: cover;
   background-position: center;
@@ -166,12 +167,12 @@ body {
   justify-content: center;
 }
 .container {
-  width: 80%;
-  height: 80%;
-  border-radius: 2rem;
-  background-color: var(--section-color);
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
-button{
+button {
   cursor: pointer;
   color: #fff;
   opacity: 0.95;
@@ -183,6 +184,9 @@ button{
 #header {
   width: 100%;
   margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   opacity: 0.95;
 }
@@ -197,6 +201,7 @@ button{
 }
 /* --------------------- Header center wrapper --------------------- **/
 .header__center-wrapper {
+  width: 100%;
   margin-top: 5rem;
   display: flex;
   justify-content: space-between;
@@ -209,26 +214,27 @@ button{
 }
 /* --------------------- Header Create Btn --------------------- **/
 @keyframes pulse-glow {
-  0%, 100% { 
-    box-shadow: 0 0 20px rgba(255,255,255,0.3); 
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   }
-  50% { 
-    box-shadow: 0 0 30px rgba(255,255,255,0.6); 
+  50% {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
   }
 }
-.header__create-btn{
+.header__create-btn {
   width: 25rem;
   padding: 12px 24px;
   animation: pulse-glow 2s infinite;
   transition: all 0.3s ease;
 }
-.header__create-btn:hover{
+.header__create-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 /* --------------------- Header Bottom Wrapper --------------------- **/
-.header__bottom-wrapper{
+.header__bottom-wrapper {
   margin-top: 4rem;
   display: flex;
   justify-content: center;
@@ -236,16 +242,20 @@ button{
 }
 /* --------------------- Header Filter Btns --------------------- **/
 @keyframes active-glow {
-  0% { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
-  100% { box-shadow: 0 0 25px rgba(255,255,255,0.5); }
+  0% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+  }
 }
-.header__filter-btn{
+.header__filter-btn {
   padding: 1.2rem 3rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
-.header__filter-btn:hover{
+.header__filter-btn:hover {
   background: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -260,32 +270,32 @@ button{
   transform: scale(0.95);
 }
 /* --------------------- Main --------------------- **/
-#main{
+#main {
   margin-top: 2rem;
 }
 /* --------------------- Main Empty State --------------------- **/
-.main__empty-state{
+.main__empty-state {
   text-align: center;
   margin-top: 7rem;
 }
-.main__empty-state > span{
-  font-size: 7rem;  
+.main__empty-state > span {
+  font-size: 7rem;
 }
-.main__title{
+.main__title {
   font-size: 2.5rem;
   font-weight: 600;
 }
-.main__caption{
+.main__caption {
   font-size: 2.3rem;
 }
 /* --------------------- Main Books --------------------- **/
-.main__books{
+.main__books {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
   color: black;
 }
-.main-book{
+.main-book {
   background-color: #fff;
   width: 30%;
   padding: 2rem;
@@ -293,41 +303,142 @@ button{
   border-radius: 3rem;
   overflow-wrap: break-word;
 }
-.main-book:hover{
+.main-book:hover {
   transform: scale(1.02);
-  
 }
 /* --------------------- Main Book header --------------------- **/
-.main-book__header{
+.main-book__header {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
-.main-book__header-text{
-  max-width: 84%;  
+.main-book__header-text {
+  max-width: 84%;
   font-size: 1.8rem;
   font-weight: 500;
 }
-.main-book__header-icons{
-  min-width: 7rem;  
-  max-width: 7rem;  
+.main-book__header-icons {
+  min-width: 7rem;
+  max-width: 7rem;
 }
 .main-book__del-icon,
-.main-book__edit-icon{
+.main-book__edit-icon {
   cursor: pointer;
 }
 /* --------------------- Main Book Author --------------------- **/
-.main-book__author{
+.main-book__author {
   opacity: 0.5;
   margin-bottom: 1rem;
 }
 /* --------------------- Main Book Bottom Wrapper --------------------- **/
-.main-book__bottom-wrapper{
+.main-book__bottom-wrapper {
   display: flex;
   justify-content: space-between;
 }
-.main-book__status{
-  background-color:#f093fb;
+.main-book__status {
+  background-color: #f093fb;
   padding: 0.5rem 2rem;
   border-radius: 10rem;
+}
+
+/* --------------------- Media Query --------------------- **/
+@media (max-width: 1200px) {
+  .main-book {
+    width: 48%;
+  }
+}
+
+@media (max-width: 992px) {
+  button {
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  body {
+    font-size: 1.5rem;
+  }
+  /* --------------------- Header --------------------- **/
+  #header {
+    margin-top: 1rem;
+  }
+  /* --------------------- Header top wrapper --------------------- **/
+  .header__title {
+    font-size: 3.6rem;
+    font-weight: 600;
+  }
+  .header__caption {
+    margin-top: 0;
+    font-size: 1.8rem;
+  }
+  /* --------------------- Header Create Btn --------------------- **/
+  .header__create-btn {
+    width: 18rem;
+    padding: 9px 18px;
+  }
+  /* --------------------- Main Book --------------------- **/
+  .main-book {
+    width: 100%;
+  }
+  .main-book:hover {
+    transform: scale(1.01);
+  }
+}
+
+@media (max-width: 768px) {
+  button {
+    font-size: 1.6rem;
+  }
+  body {
+    font-size: 1.4rem;
+  }
+  /* --------------------- Helper class --------------------- **/
+  .glass-card {
+    padding: 0.99rem;
+  }
+  /* --------------------- Header top wrapper --------------------- **/
+  .header__top-wrapper {
+    max-width: 36rem;
+  }
+  .header__title {
+    font-size: 3rem;
+  }
+  .header__caption {
+    font-size: 1.6rem;
+  }
+  /* --------------------- Header center wrapper --------------------- **/
+  .header__center-wrapper {
+    margin-top: 2rem;
+    flex-direction: column;
+  }
+  /* --------------------- Header Create Btn --------------------- **/
+  .header__create-btn {
+    margin-top: 2rem;
+  }
+  /* --------------------- Header Bottom Wrapper --------------------- **/
+  .header__bottom-wrapper {
+    margin-top: 2rem;
+  }
+  /* --------------------- Main Books --------------------- **/
+  #main {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  button,
+  .main-book__header-text {
+    font-size: 1.5rem;
+  }
+  /* --------------------- Helper class --------------------- **/
+  .glass-card {
+    padding: 0.5rem;
+  }
+  /* --------------------- Header Bottom Wrapper --------------------- **/
+  .header__bottom-wrapper {
+    flex-direction: column;
+    width: 100%;
+  }
+  /* --------------------- Header Filter Btns --------------------- **/
+  .header__filter-btn {
+    width: 100%;
+  }
 }
