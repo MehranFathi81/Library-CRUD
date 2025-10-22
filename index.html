@@ -53,7 +53,7 @@
           fill="#FFCB45"
         ></path>
       </symbol>
-      
+
       <symbol
         id="icon-delete"
         xmlns="http://www.w3.org/2000/svg"
@@ -100,6 +100,29 @@
             fill="#a8e3f0"
           />
         </g>
+      </symbol>
+
+      <symbol
+        xmlns="http://www.w3.org/2000/svg"
+        x="0px"
+        y="0px"
+        width="80"
+        height="80"
+        viewBox="0 0 48 48"
+        id="icon-del-form"
+      >
+        <path
+          fill="#f44336"
+          d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"
+        ></path>
+        <path
+          fill="#fff"
+          d="M29.656,15.516l2.828,2.828l-14.14,14.14l-2.828-2.828L29.656,15.516z"
+        ></path>
+        <path
+          fill="#fff"
+          d="M32.484,29.656l-2.828,2.828l-14.14-14.14l2.828-2.828L32.484,29.656z"
+        ></path>
       </symbol>
     </svg>
     <div class="container">
@@ -166,13 +189,24 @@
               <h3 class="main-book__header-text">کلیات شمس تبریزی</h3>
               <div class="main-book__header-icons">
                 <svg class="main-book__del-icon">
-                  <linearGradient x1="64.111" y1="89.966" x2="64.111" y2="147.628"
-                    id="IconifyId17ecdb2904d178eab21434" gradientUnits="userSpaceOnUse">
+                  <linearGradient
+                    x1="64.111"
+                    y1="89.966"
+                    x2="64.111"
+                    y2="147.628"
+                    id="IconifyId17ecdb2904d178eab21434"
+                    gradientUnits="userSpaceOnUse"
+                  >
                     <stop offset="0" stop-color="#82afc1" />
                     <stop offset="1" stop-color="#2f7889" />
                   </linearGradient>
-                  <radialGradient cx="65.53" cy="12.998" r="52.279"
-                  id="IconifyId17ecdb2904d178eab21435" gradientUnits="userSpaceOnUse">
+                  <radialGradient
+                    cx="65.53"
+                    cy="12.998"
+                    r="52.279"
+                    id="IconifyId17ecdb2904d178eab21435"
+                    gradientUnits="userSpaceOnUse"
+                  >
                     <stop offset=".722" stop-color="#94d1e0" />
                     <stop offset="1" stop-color="#94d1e0" stop-opacity="0" />
                   </radialGradient>
@@ -199,6 +233,68 @@
           </article>
         </section>
       </main>
+    </div>
+    <div class="modal-backdrop">
+      <section class="modal-screen glass-card">
+        <svg class="hidden">
+          <use href="#icon-del-form"></use>
+        </svg>
+        <h1 class="modal-screen__header">افزودن کتاب جدید</h1>
+        <div class="modal-screen__body">
+          <form class="form" action="">
+            <div>
+              <label for="form__title">عنوان کتاب</label>
+              <p><span class="modal-screen__maxlength-title">30</span>/30</p>
+            </div>
+            <input
+              class="glass-card"
+              type="text"
+              maxlength="30"
+              name="form__title"
+              id="form__title"
+            />
+
+            <div>
+              <label for="form__author">نویسنده</label>
+              <p><span class="modal-screen__maxlength-title">30</span>/30</p>
+            </div>
+            <input
+              maxlength="30"
+              class="glass-card"
+              type="text"
+              name="form__author"
+              id="form__author"
+            />
+
+            <label for="form__status">وضعیت</label>
+            <select class="glass-card" name="form__status" id="form__status">
+              <option value="">کتاب جدید</option>
+              <option value="">درحال خواندن</option>
+              <option value="">خوانده شده</option>
+            </select>
+
+            <label for="form__score">امتیاز</label>
+            <input
+              max="5"
+              min="1"
+              value="1"
+              class="glass-card"
+              type="number"
+              name="form__score"
+              id="form__score"
+              placeholder="امتیاز از 1 تا 5 "
+            />
+          </form>
+          <p class="modal-screen__body-text hidden">
+            آیا مطمئن هستید که می‌خواهید این کتاب را حذف کنید؟
+          </p>
+        </div>
+        <div class="modal-screen__btns">
+          <button class="modal-screen__del-btn hidden">حذف</button>
+          <button class="modal-screen__save-btn">ذخیره</button>
+          <button class="modal-screen__cancel-btn">انصراف</button>
+        </div>
+      </section>
     </div>
     <script src="./js/app.js"></script>
   </body>
