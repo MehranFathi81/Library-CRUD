@@ -169,7 +169,7 @@ body {
   font-size: 1.6rem;
   line-height: 1.6;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)
-  no-repeat center;
+    no-repeat center;
   background-size: cover;
   background-attachment: scroll;
   display: flex;
@@ -400,20 +400,20 @@ button {
 .modal-screen__body {
   margin-top: 1rem;
 }
-.modal-screen__body-text{
+.modal-screen__body-text {
   font-size: 1.8rem;
   width: 100%;
   margin-bottom: 3rem;
 }
 /* --------------------- Modal Screen form --------------------- **/
-form{
+form {
   margin-top: 2rem;
 }
 form > div {
   display: flex;
   justify-content: space-between;
 }
-.modal-screen svg{
+.modal-screen svg {
   width: 80px;
   height: 80px;
 }
@@ -432,8 +432,8 @@ form > div {
   border: none;
   background: #6b7280;
 }
-.modal-screen__cancel-btn:hover{
-  background: #4b5563
+.modal-screen__cancel-btn:hover {
+  background: #4b5563;
 }
 .modal-screen__save-btn {
   background: #10b981;
@@ -496,6 +496,9 @@ form > div {
   body {
     font-size: 1.4rem;
   }
+  input,select{
+    height: 4rem;
+  }
   /* --------------------- Helper class --------------------- **/
   .glass-card {
     padding: 0.99rem;
@@ -526,6 +529,29 @@ form > div {
   /* --------------------- Main Books --------------------- **/
   #main {
     margin-top: 0;
+  }
+  /* --------------------- Modal Screen --------------------- **/
+  .modal-screen {
+    padding: 12px;
+    max-width: 360px;
+  }
+  .modal-screen__header {
+    font-size: 2.5rem;
+  }
+  .modal-screen svg {
+  width: 65px;
+  height: 65px;
+  }
+  /* --------------------- Modal Screen Body --------------------- **/
+  .modal-screen__body-text {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+  }
+  /* --------------------- Modal Screen Btns --------------------- **/
+  .modal-screen__save-btn,
+  .modal-screen__del-btn,
+  .modal-screen__cancel-btn {
+    height: 4rem;
   }
 }
 
