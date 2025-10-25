@@ -149,6 +149,7 @@ table {
   justify-content: center;
   z-index: 50;
 }
+
 /* --------------------- App Css --------------------- **/
 html {
   -webkit-box-sizing: border-box;
@@ -447,6 +448,44 @@ form > div {
 .modal-screen__del-btn:hover {
   background: #dc2626;
 }
+/* --------------------- Toast Container--------------------- **/
+.toast-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: 1rem;
+  min-width: 27rem;
+  max-width: 45rem;
+  /* background-color: #667eea; */
+}
+/* --------------------- Toast --------------------- **/
+.toast {
+  max-width: 100%;
+  height: max-content;
+  margin-top: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.toast svg {
+  margin: 1rem;
+  width: 5rem;
+  height: 5rem;
+}
+.toast__message {
+  width: 87%;
+  margin-left: 1rem;
+  font-size: 1.8rem;
+  text-align: justify;
+}
+.toast-success{
+  background-color: #029946;
+}
+.toast-error{
+  background-color: #dc2626;
+}
 /* --------------------- Media Query --------------------- **/
 @media (max-width: 1200px) {
   .main-book {
@@ -496,7 +535,8 @@ form > div {
   body {
     font-size: 1.4rem;
   }
-  input,select{
+  input,
+  select {
     height: 4rem;
   }
   /* --------------------- Helper class --------------------- **/
@@ -539,8 +579,8 @@ form > div {
     font-size: 2.5rem;
   }
   .modal-screen svg {
-  width: 65px;
-  height: 65px;
+    width: 65px;
+    height: 65px;
   }
   /* --------------------- Modal Screen Body --------------------- **/
   .modal-screen__body-text {
@@ -572,5 +612,18 @@ form > div {
   /* --------------------- Header Filter Btns --------------------- **/
   .header__filter-btn {
     width: 100%;
+  }
+  /* --------------------- Toast Container--------------------- **/
+  .toast-container {
+    padding: 0.5rem;
+  }
+  .toast svg {
+    margin: 0.5rem;
+    width: 3.8rem;
+    height: 3.8rem;
+  }
+  .toast__message {
+    margin-left: 0.5rem;
+    font-size: 1.5rem;
   }
 }
