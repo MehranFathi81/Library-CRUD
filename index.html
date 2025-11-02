@@ -296,7 +296,9 @@
         <svg class="hidden">
           <use href="#icon-del-form"></use>
         </svg>
-        <h1 class="modal-screen__header">افزودن کتاب جدید</h1>
+        <h1 class="modal-screen__header">
+          <!-- Load from js -->
+        </h1>
         <div class="modal-screen__body">
           <form class="form" action="">
             <div>
@@ -324,10 +326,10 @@
             />
             
             <label for="form__status">وضعیت</label>
-            <select class="glass-card" name="form__status" id="form__status">
-              <option value="">کتاب جدید</option>
-              <option value="">درحال خواندن</option>
-              <option value="">خوانده شده</option>
+            <select class="glass-card" name="form__status" value="" id="form__status">
+              <option value="new">کتاب جدید</option>
+              <option value="reading">درحال خواندن</option>
+              <option value="done">خوانده شده</option>
             </select>
             
             <label for="form__score">امتیاز</label>
