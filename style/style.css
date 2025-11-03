@@ -149,7 +149,16 @@ table {
   justify-content: center;
   z-index: 50;
 }
-
+.new{
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+.reading{
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+.done{
+  background: linear-gradient(135deg, #10b981, #059669);
+  
+}
 /* --------------------- App Css --------------------- **/
 html {
   -webkit-box-sizing: border-box;
@@ -380,7 +389,8 @@ button {
   justify-content: space-between;
 }
 .main-book__status {
-  background-color: #f093fb;
+  color: #fff;
+  font-weight: 600;
   padding: 0.5rem 2rem;
   border-radius: 10rem;
 }

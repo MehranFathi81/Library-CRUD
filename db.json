@@ -1,0 +1,25 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "کلیات شمس تبریزی",
+      "author": "مولانا",
+      "status": "reading",
+      "score": 1
+    },
+    {
+      "id": 2,
+      "title": "قدرت عادت",
+      "author": "Charles Duhigg",
+      "status": "new",
+      "score": 2
+    },
+    {
+      "id": 3,
+      "title": "ملت عشق",
+      "author": "الیف شافاک",
+      "status": "done",
+      "score": 5
+    }
+  ]
+}
