@@ -3,6 +3,8 @@ const modal = document.querySelector(".modal-backdrop");
 const modalHeader = document.querySelector(".modal-screen__header");
 const modalDelIcon = modal.firstElementChild.firstElementChild;
 const modalDelBodyText = document.querySelector(".modal-screen__body-text");
+const modalLengthTitle = document.querySelector('.modal-screen__maxlength-title')
+const modalLengthAuthor = document.querySelector('.modal-screen__maxlength-author')
 //* // Modal Btns //
 const modalCancelBtn = document.querySelector(".modal-screen__cancel-btn");
 const modalSaveBtn = document.querySelector(".modal-screen__save-btn");
@@ -29,13 +31,11 @@ const mainEmptyState = document.querySelector(".main__empty-state");
 let isEditForm = false;
 let targetBook;
 //* /////////////// Functions ///////////////
-//* // initApp //
 const initApp = async () => {
   window.addEventListener("load", async () => {
     booksContainer.innerHTML = "";
     const response = await fetch("./db.json");
     const data = await response.json();
-
     if (data.books.length) {
       mainEmptyState.classList.add("hidden");
       data.books.forEach((book) => {
@@ -63,7 +63,7 @@ const initApp = async () => {
   });
 };
 initApp();
-//* // Add Event To Edit And Del Btns For Books  //
+
 const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
   allBookElem.forEach((bookElem) => {
     bookElem.addEventListener("click", (event) => {
@@ -92,6 +92,7 @@ const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
     });
   });
 };
+
 const createBookTemplate = (book, bookStatus, bookScoreElems) => {
   return `
     <article class="main-book" id="book-${book.id}">
@@ -143,7 +144,6 @@ const createBookTemplate = (book, bookStatus, bookScoreElems) => {
   `;
 };
 
-//* // Show Modal //
 // modalTypes = "addBook" || "editBook" || "removeBook"
 const showModal = (modalTypeStr) => {
   // "addBook" & "editBook"
@@ -155,8 +155,11 @@ const showModal = (modalTypeStr) => {
   modalSaveBtn.classList.remove("hidden");
 
   if (modalTypeStr === "addBook") {
-    formStatus.value = "new";
     modalHeader.innerHTML = "افزودن کتاب جدید";
+    formStatus.value = "new";
+    formTitle.value = "";
+    formAuthor.value = "";
+    formScore.value = "1";
   } else if (modalTypeStr === "editBook") {
     modalHeader.innerHTML = "ویرایش کتاب";
   } else if (modalTypeStr === "removeBook") {
@@ -170,9 +173,19 @@ const showModal = (modalTypeStr) => {
   }
 };
 
+const formTitleAndFormAuthorLength = (event) => {
+  if (event.target.id === "form__title") {
+    modalLengthTitle.innerHTML = event.target.value.length
+  }
+  if (event.target.id === "form__author") {
+    modalLengthAuthor.innerHTML = event.target.value.length
+  }
+};
+
 //* /////////////// Events ////////////////////
 addBookBtn.addEventListener("click", () => showModal("addBook"));
-
+formTitle.addEventListener("keyup", formTitleAndFormAuthorLength);
+formAuthor.addEventListener("keyup", formTitleAndFormAuthorLength);
 //* // Keys Events //
 document.addEventListener("keydown", (event) => {
   if (!modal.classList.contains("hidden") && event.key === "Escape") {
