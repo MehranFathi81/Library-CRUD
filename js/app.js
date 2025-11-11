@@ -3,8 +3,12 @@ const modal = document.querySelector(".modal-backdrop");
 const modalHeader = document.querySelector(".modal-screen__header");
 const modalDelIcon = modal.firstElementChild.firstElementChild;
 const modalDelBodyText = document.querySelector(".modal-screen__body-text");
-const modalLengthTitle = document.querySelector('.modal-screen__maxlength-title')
-const modalLengthAuthor = document.querySelector('.modal-screen__maxlength-author')
+const modalLengthTitle = document.querySelector(
+  ".modal-screen__maxlength-title"
+);
+const modalLengthAuthor = document.querySelector(
+  ".modal-screen__maxlength-author"
+);
 //* // Modal Btns //
 const modalCancelBtn = document.querySelector(".modal-screen__cancel-btn");
 const modalSaveBtn = document.querySelector(".modal-screen__save-btn");
@@ -26,19 +30,27 @@ const statusBookMap = {
   reading: "درحال خواندن",
   done: "خوانده شده",
 };
-
 const mainEmptyState = document.querySelector(".main__empty-state");
+//* // Urls //
+const binId = "6912e5dd43b1c97be9a63b39";
+const secretKey =
+  "$2a$10$C1fEJMsNBHm6LSCPfqEceefchPTyK5WOyuc6kkX1jkFLRIJ2NNew.";
+const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
+//* /////////
 let isEditForm = false;
 let targetBook;
 //* /////////////// Functions ///////////////
 const initApp = async () => {
   window.addEventListener("load", async () => {
     booksContainer.innerHTML = "";
-    const response = await fetch("./db.json");
+    const response = await fetch(`${baseUrl}/latest`, {
+      headers: { "X-Master-Key": secretKey },
+    });
     const data = await response.json();
-    if (data.books.length) {
+
+    if (data.record.books.length) {
       mainEmptyState.classList.add("hidden");
-      data.books.forEach((book) => {
+      data.record.books.forEach((book) => {
         let bookStatus = statusBookMap[book.status];
 
         let bookScoreElems = "";
@@ -64,6 +76,7 @@ const initApp = async () => {
 };
 initApp();
 
+let delBtnId = null;
 const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
   allBookElem.forEach((bookElem) => {
     bookElem.addEventListener("click", (event) => {
@@ -87,6 +100,7 @@ const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
         formStatus.value = statusBookMap[targetBookStatus];
         showModal("editBook");
       } else if (delBtn) {
+        delBtnId = targetBook.id;
         showModal("removeBook");
       }
     });
@@ -175,15 +189,71 @@ const showModal = (modalTypeStr) => {
 
 const formTitleAndFormAuthorLength = (event) => {
   if (event.target.id === "form__title") {
-    modalLengthTitle.innerHTML = event.target.value.length
+    modalLengthTitle.innerHTML = event.target.value.length;
   }
   if (event.target.id === "form__author") {
-    modalLengthAuthor.innerHTML = event.target.value.length
+    modalLengthAuthor.innerHTML = event.target.value.length;
   }
 };
+const modalEvents = (event) => {
+  // Cancel Button
+  if (
+    event.target.classList[0] === "modal-screen__cancel-btn" ||
+    event.target.classList[0] === "modal-backdrop"
+  ) {
+    modal.classList.add("hidden");
+  }
 
+  // Remove Button
+  if (event.target.classList[0] === "modal-screen__del-btn") {
+    const bookId = Number(delBtnId.slice(5));
+    removeBook(bookId);
+  }
+};
+const removeBook = async (bookId) => {
+  try {
+    const response = await fetch(`${baseUrl}/latest`, {
+      headers: { "X-Master-Key": secretKey },
+    });
+
+    if (!response.ok) {
+      console.log("داده‌ها لود نشدن");
+      return;
+    }
+
+    const data = await response.json();
+    if (!data?.record?.books) {
+      console.log("خطا در دریافت دیتا از دیتابیس");
+      return;
+    }
+
+    const books = data.record.books;
+    const newBooks = books.filter((book) => book.id !== bookId);
+
+    const updateResponse = await fetch(baseUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": secretKey,
+      },
+      body: JSON.stringify({ books: newBooks }),
+    });
+
+    if (!updateResponse.ok) {
+      console.log("خطا در آپدیت دیتابیس");
+      return;
+    }
+
+    document.getElementById(`book-${bookId}`).remove();
+    modal.classList.add("hidden");
+    console.log("کتاب با موفقیت حذف شد ✅");
+  } catch {
+    console.log("⚠️ خطا در اینترنت یا ارتباط با سرور");
+  }
+};
 //* /////////////// Events ////////////////////
 addBookBtn.addEventListener("click", () => showModal("addBook"));
+modal.addEventListener("click", modalEvents);
 formTitle.addEventListener("keyup", formTitleAndFormAuthorLength);
 formAuthor.addEventListener("keyup", formTitleAndFormAuthorLength);
 //* // Keys Events //
