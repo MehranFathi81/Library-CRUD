@@ -31,6 +31,13 @@ const statusBookMap = {
   done: "خوانده شده",
 };
 const mainEmptyState = document.querySelector(".main__empty-state");
+//* // Books Cards //
+
+const allBooksCountElem = document.querySelector(".header__books-count");
+const newBooksCountElem = document.querySelector(".header__new-count");
+const readingBooksCountElem = document.querySelector(".header__reading-count");
+const readBooksCountElem = document.querySelector(".header__read-count");
+
 //* // Urls //
 const binId = "6912e5dd43b1c97be9a63b39";
 const secretKey =
@@ -38,7 +45,6 @@ const secretKey =
 const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 //* /////////
 let isEditForm = false;
-let targetBook;
 let delBtnId = null;
 let editBtnId = null;
 //* /////////////// Functions ///////////////
@@ -49,7 +55,7 @@ const initApp = async () => {
       headers: { "X-Master-Key": secretKey },
     });
     const data = await response.json();
-
+    updateBookCards(data.record.books);
     if (data.record.books.length) {
       mainEmptyState.classList.add("hidden");
       data.record.books.forEach((book) => {
@@ -77,13 +83,12 @@ const initApp = async () => {
   });
 };
 initApp();
-
 const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
   allBookElem.forEach((bookElem) => {
     bookElem.addEventListener("click", (event) => {
       const editBtn = event.target.closest(".main-book__edit-icon");
       const delBtn = event.target.closest(".main-book__del-icon");
-      targetBook = event.target.closest(".main-book");
+      let targetBook = event.target.closest(".main-book");
       if (editBtn) {
         editBtnId = targetBook.id;
         const targetBookStatus = targetBook
@@ -108,7 +113,6 @@ const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
     });
   });
 };
-
 const createBookTemplate = (book, bookStatus, bookScoreElems) => {
   return `
     <article class="main-book" id="book-${book.id}">
@@ -159,7 +163,6 @@ const createBookTemplate = (book, bookStatus, bookScoreElems) => {
     </article>
   `;
 };
-
 // modalTypes = "addBook" || "editBook" || "removeBook"
 const showModal = (modalTypeStr) => {
   // "addBook" & "editBook"
@@ -169,9 +172,9 @@ const showModal = (modalTypeStr) => {
   modalDelBodyText.classList.add("hidden");
   modalDelBtn.classList.add("hidden");
   modalSaveBtn.classList.remove("hidden");
-  modalLengthTitle.innerHTML = formTitle.value.trim().length
-  modalLengthAuthor.innerHTML = formAuthor.value.trim().length
-  
+  modalLengthTitle.innerHTML = formTitle.value.trim().length;
+  modalLengthAuthor.innerHTML = formAuthor.value.trim().length;
+
   if (modalTypeStr === "addBook") {
     modalHeader.innerHTML = "افزودن کتاب جدید";
     formStatus.value = "new";
@@ -190,7 +193,6 @@ const showModal = (modalTypeStr) => {
     modalSaveBtn.classList.add("hidden");
   }
 };
-
 const formTitleAndFormAuthorLength = (event) => {
   if (event.target.id === "form__title") {
     modalLengthTitle.innerHTML = event.target.value.length;
@@ -280,6 +282,7 @@ const removeBook = async (bookId) => {
 
     const books = data.record.books;
     const newBooks = books.filter((book) => book.id !== bookId);
+    updateBookCards(newBooks);
 
     const updateResponse = await fetch(baseUrl, {
       method: "PUT",
@@ -324,7 +327,7 @@ const editBook = async (bookId, updatedData) => {
     const newBooks = books.map((book) =>
       book.id === bookId ? { ...book, ...updatedData } : book
     );
-
+    updateBookCards(newBooks);
     const updateResponse = await fetch(baseUrl, {
       method: "PUT",
       headers: {
@@ -384,6 +387,7 @@ const addBook = async (newBook) => {
     const data = await response.json();
     const books = data?.record?.books;
     books.push(newBook);
+    updateBookCards(books);
 
     const updateResponse = await fetch(baseUrl, {
       method: "PUT",
@@ -416,10 +420,29 @@ const addBook = async (newBook) => {
     );
     const newBookElem = document.getElementById(`book-${newBook.id}`);
     addEventToEditAndDelBtnsForBooks([newBookElem]);
+
     modal.classList.add("hidden");
   } catch {
     console.log("⚠️ خطا در اینترنت یا ارتباط با سرور");
   }
+};
+const updateBookCards = (books) => {
+  allBooksCountElem.innerHTML = books.length;
+  let newBooksCount = 0;
+  let readingBooksCount = 0;
+  let readBooksCount = 0;
+  books.forEach((book) => {
+    if (book.status === "new") {
+      ++newBooksCount;
+    } else if (book.status === "reading") {
+      ++readingBooksCount;
+    } else {
+      ++readBooksCount;
+    }
+  });
+  newBooksCountElem.innerHTML = newBooksCount;
+  readingBooksCountElem.innerHTML = readingBooksCount;
+  readBooksCountElem.innerHTML = readBooksCount;
 };
 //* /////////////// Events ////////////////////
 addBookBtn.addEventListener("click", () => showModal("addBook"));
