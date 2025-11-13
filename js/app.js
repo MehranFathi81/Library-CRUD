@@ -55,6 +55,7 @@ const initApp = async () => {
       headers: { "X-Master-Key": secretKey },
     });
     const data = await response.json();
+    renderA
     updateBookCards(data.record.books);
     if (data.record.books.length) {
       mainEmptyState.classList.add("hidden");
@@ -163,6 +164,92 @@ const createBookTemplate = (book, bookStatus, bookScoreElems) => {
     </article>
   `;
 };
+const AddEventToFilterButtons = async (books) => {
+  try{
+    const response = await fetch(`${baseUrl}/latest`, {
+      headers: { "X-Master-Key": secretKey },
+    });
+
+    if (!response.ok) {
+      console.log("داده‌ها لود نشدن");
+      return;
+    }
+
+    const data = await response.json();
+    let books = data?.record?.books;
+    const filterBtnsContainerElem = document.querySelector(
+      ".header__bottom-wrapper"
+    );
+
+    filterBtnsContainerElem.addEventListener("click", (event) => {
+      const prevActiveBtnElem = document.querySelector(".active");
+      const targetBtnText = event.target.innerHTML.trim();
+      const targetBtn = event.target;
+  
+      if (prevActiveBtnElem !== targetBtn) {
+        prevActiveBtnElem.classList.remove("active");
+        targetBtn.classList.add("active");
+
+        booksContainer.innerHTML = "";
+        const addFilteredBook = (book) => {
+          let bookStatus = statusBookMap[book.status];
+          let bookScoreElems = "";
+          for (let i = 0; i < book.score; i++) {
+            bookScoreElems += `
+              <svg class="main-book__icon-star">
+                <use href="#icon-star"></use>
+              </svg>
+            `;
+          }
+          booksContainer.insertAdjacentHTML(
+            "beforeend",
+            createBookTemplate(book, bookStatus, bookScoreElems)
+          );
+        };
+        // Filter Books 
+        switch (targetBtnText) {
+          case "کتاب‌های جدید": {
+            books.forEach((book) => {
+              if (book.status === "new") {
+                addFilteredBook(book)
+              }
+            });
+            break;
+          }
+          case "خوانده شده": {
+            
+            books.forEach((book) => {
+              console.log(book.status);
+              
+              if (book.status === "done") {
+                addFilteredBook(book)
+              }
+            });
+            break;
+          }
+          case "درحال خواندن": {
+            books.forEach((book) => {
+              if (book.status === "reading") {
+                addFilteredBook(book)
+              }
+            });
+            break;
+          }
+          default: {
+            // For All Books
+            books.forEach((book) => {
+              addFilteredBook(book)
+            });
+            break;
+          }
+        }
+      }
+    });
+  } catch {
+    console.log("⚠️ خطا در اینترنت یا ارتباط با سرور");
+  }
+};
+AddEventToFilterButtons();
 // modalTypes = "addBook" || "editBook" || "removeBook"
 const showModal = (modalTypeStr) => {
   // "addBook" & "editBook"
