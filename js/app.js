@@ -46,7 +46,7 @@ const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 //* /////////
 let isEditForm = false;
 let delBtnId = null;
-let editBtnId = null;
+let books = [];
 //* /////////////// Functions ///////////////
 const initApp = async () => {
   window.addEventListener("load", async () => {
@@ -55,11 +55,12 @@ const initApp = async () => {
       headers: { "X-Master-Key": secretKey },
     });
     const data = await response.json();
-    renderA
-    updateBookCards(data.record.books);
-    if (data.record.books.length) {
+    books = data.record.books;
+    updateBookCards(books);
+
+    if (books.length) {
       mainEmptyState.classList.add("hidden");
-      data.record.books.forEach((book) => {
+      books.forEach((book) => {
         let bookStatus = statusBookMap[book.status];
 
         let bookScoreElems = "";
@@ -164,92 +165,61 @@ const createBookTemplate = (book, bookStatus, bookScoreElems) => {
     </article>
   `;
 };
-const AddEventToFilterButtons = async (books) => {
-  try{
-    const response = await fetch(`${baseUrl}/latest`, {
-      headers: { "X-Master-Key": secretKey },
-    });
+const addEventToFilterButtons = () => {
+  const filterBtnsContainerElem = document.querySelector(
+    ".header__bottom-wrapper"
+  );
 
-    if (!response.ok) {
-      console.log("داده‌ها لود نشدن");
-      return;
-    }
+  filterBtnsContainerElem.addEventListener("click", (event) => {
+    const prevActiveBtnElem = document.querySelector(".active");
+    const targetBtnText = event.target.innerHTML.trim();
+    const targetBtn = event.target;
 
-    const data = await response.json();
-    let books = data?.record?.books;
-    const filterBtnsContainerElem = document.querySelector(
-      ".header__bottom-wrapper"
-    );
+    if (prevActiveBtnElem !== targetBtn) {
+      prevActiveBtnElem.classList.remove("active");
+      targetBtn.classList.add("active");
 
-    filterBtnsContainerElem.addEventListener("click", (event) => {
-      const prevActiveBtnElem = document.querySelector(".active");
-      const targetBtnText = event.target.innerHTML.trim();
-      const targetBtn = event.target;
-  
-      if (prevActiveBtnElem !== targetBtn) {
-        prevActiveBtnElem.classList.remove("active");
-        targetBtn.classList.add("active");
-
-        booksContainer.innerHTML = "";
-        const addFilteredBook = (book) => {
-          let bookStatus = statusBookMap[book.status];
-          let bookScoreElems = "";
-          for (let i = 0; i < book.score; i++) {
-            bookScoreElems += `
-              <svg class="main-book__icon-star">
-                <use href="#icon-star"></use>
-              </svg>
-            `;
-          }
-          booksContainer.insertAdjacentHTML(
-            "beforeend",
-            createBookTemplate(book, bookStatus, bookScoreElems)
-          );
-        };
-        // Filter Books 
-        switch (targetBtnText) {
-          case "کتاب‌های جدید": {
-            books.forEach((book) => {
-              if (book.status === "new") {
-                addFilteredBook(book)
-              }
-            });
-            break;
-          }
-          case "خوانده شده": {
-            
-            books.forEach((book) => {
-              console.log(book.status);
-              
-              if (book.status === "done") {
-                addFilteredBook(book)
-              }
-            });
-            break;
-          }
-          case "درحال خواندن": {
-            books.forEach((book) => {
-              if (book.status === "reading") {
-                addFilteredBook(book)
-              }
-            });
-            break;
-          }
-          default: {
-            // For All Books
-            books.forEach((book) => {
-              addFilteredBook(book)
-            });
-            break;
-          }
+      booksContainer.innerHTML = "";
+      const addFilteredBook = (book) => {
+        let bookStatus = statusBookMap[book.status];
+        let bookScoreElems = "";
+        for (let i = 0; i < book.score; i++) {
+          bookScoreElems += `
+            <svg class="main-book__icon-star">
+              <use href="#icon-star"></use>
+            </svg>
+          `;
         }
+        booksContainer.insertAdjacentHTML(
+          "beforeend",
+          createBookTemplate(book, bookStatus, bookScoreElems)
+        );
+      };
+
+      // Filter Books
+      switch (targetBtnText) {
+        case "کتاب‌های جدید":
+          books.forEach(
+            (book) => book.status === "new" && addFilteredBook(book)
+          );
+          break;
+        case "خوانده شده":
+          books.forEach(
+            (book) => book.status === "done" && addFilteredBook(book)
+          );
+          break;
+        case "درحال خواندن":
+          books.forEach(
+            (book) => book.status === "reading" && addFilteredBook(book)
+          );
+          break;
+        default:
+          books.forEach(addFilteredBook);
       }
-    });
-  } catch {
-    console.log("⚠️ خطا در اینترنت یا ارتباط با سرور");
-  }
+    }
+  });
 };
-AddEventToFilterButtons();
+addEventToFilterButtons();
 // modalTypes = "addBook" || "editBook" || "removeBook"
 const showModal = (modalTypeStr) => {
   // "addBook" & "editBook"
@@ -330,7 +300,10 @@ const modalEvents = (event) => {
     event.target.classList[0] === "modal-screen__save-btn" &&
     modalHeader.innerHTML === "افزودن کتاب جدید"
   ) {
-    let lastBookId = +booksContainer.lastElementChild.id.slice(5);
+    let lastBookId = 0;
+    if (booksContainer.lastElementChild) {
+      lastBookId = +booksContainer.lastElementChild.id.slice(5);
+    }
 
     const newBook = {
       id: ++lastBookId,
@@ -351,167 +324,97 @@ const modalEvents = (event) => {
   }
 };
 const removeBook = async (bookId) => {
-  try {
-    const response = await fetch(`${baseUrl}/latest`, {
-      headers: { "X-Master-Key": secretKey },
-    });
+  books = books.filter((book) => book.id !== bookId);
+  updateBookCards(books);
+  console.log(books);
 
-    if (!response.ok) {
-      console.log("داده‌ها لود نشدن");
-      return;
-    }
+  const res = await fetch(baseUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": secretKey,
+    },
+    body: JSON.stringify({ books: books }),
+  });
+  if (!res.ok) return console.log("⚠️ خطا در آپدیت سرور");
 
-    const data = await response.json();
-    if (!data?.record?.books) {
-      console.log("خطا در دریافت دیتا از دیتابیس");
-      return;
-    }
-
-    const books = data.record.books;
-    const newBooks = books.filter((book) => book.id !== bookId);
-    updateBookCards(newBooks);
-
-    const updateResponse = await fetch(baseUrl, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Master-Key": secretKey,
-      },
-      body: JSON.stringify({ books: newBooks }),
-    });
-
-    if (!updateResponse.ok) {
-      console.log("خطا در آپدیت دیتابیس");
-      return;
-    }
-
-    document.getElementById(`book-${bookId}`).remove();
-    modal.classList.add("hidden");
-    console.log("کتاب با موفقیت حذف شد ✅");
-  } catch {
-    console.log("⚠️ خطا در اینترنت یا ارتباط با سرور");
-  }
+  document.getElementById(`book-${bookId}`).remove();
+  modal.classList.add("hidden");
+  console.log("کتاب با موفقیت حذف شد ✅");
 };
 const editBook = async (bookId, updatedData) => {
-  try {
-    const response = await fetch(`${baseUrl}/latest`, {
-      headers: { "X-Master-Key": secretKey },
-    });
+  books = books.map((book) =>
+    book.id === bookId ? { ...book, ...updatedData } : book
+  );
+  updateBookCards(books);
 
-    if (!response.ok) {
-      console.log("داده‌ها لود نشدن");
-      return;
-    }
+  const bookElem = document.getElementById(`book-${bookId}`);
 
-    const data = await response.json();
-    const books = data?.record?.books;
+  if (bookElem) {
+    bookElem.querySelector(".main-book__header-text").textContent =
+      updatedData.title;
 
-    if (!books) {
-      console.log("خطا در دریافت دیتا از دیتابیس");
-      return;
-    }
+    bookElem.querySelector(".main-book__author-name").textContent =
+      updatedData.author;
 
-    const newBooks = books.map((book) =>
-      book.id === bookId ? { ...book, ...updatedData } : book
-    );
-    updateBookCards(newBooks);
-    const updateResponse = await fetch(baseUrl, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Master-Key": secretKey,
-      },
-      body: JSON.stringify({ books: newBooks }),
-    });
+    const bookElemStatus = bookElem.querySelector(".main-book__status");
+    bookElemStatus.textContent = statusBookMap[updatedData.status];
+    bookElemStatus.classList = `main-book__status ${updatedData.status}`;
 
-    if (!updateResponse.ok) {
-      console.log("خطا در آپدیت");
-      return;
-    }
+    const scoreContainer = bookElem.querySelector(".main-book__score");
+    scoreContainer.innerHTML = "";
 
-    const bookElem = document.getElementById(`book-${bookId}`);
-
-    if (bookElem) {
-      bookElem.querySelector(".main-book__header-text").textContent =
-        updatedData.title;
-
-      bookElem.querySelector(".main-book__author-name").textContent =
-        updatedData.author;
-
-      const bookElemStatus = bookElem.querySelector(".main-book__status");
-      bookElemStatus.textContent = statusBookMap[updatedData.status];
-      bookElemStatus.classList = `main-book__status ${updatedData.status}`;
-      // bookElemStatus.value = updatedData
-      const scoreContainer = bookElem.querySelector(".main-book__score");
-      scoreContainer.innerHTML = "";
-
-      for (let i = 0; i < updatedData.score; i++) {
-        scoreContainer.innerHTML += `
-          <svg class="main-book__icon-star">
-            <use href="#icon-star"></use>
-          </svg>
-        `;
-      }
-    }
-
-    modal.classList.add("hidden");
-    console.log("کتاب با موفقیت ویرایش شد");
-  } catch {
-    console.log("⚠️ خطا در اینترنت یا ارتباط با سرور");
-  }
-};
-const addBook = async (newBook) => {
-  try {
-    const response = await fetch(`${baseUrl}/latest`, {
-      headers: { "X-Master-Key": secretKey },
-    });
-
-    if (!response.ok) {
-      console.log("داده‌ها لود نشدن");
-      return;
-    }
-
-    const data = await response.json();
-    const books = data?.record?.books;
-    books.push(newBook);
-    updateBookCards(books);
-
-    const updateResponse = await fetch(baseUrl, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Master-Key": secretKey,
-      },
-      body: JSON.stringify({ books: books }),
-    });
-
-    if (!updateResponse.ok) {
-      console.log("مشکل در آپدیت رسپانس");
-      return;
-    }
-
-    let bookStatus = statusBookMap[newBook.status];
-
-    let bookScoreElems = "";
-    for (let i = 0; i < newBook.score; i++) {
-      bookScoreElems += `          
+    for (let i = 0; i < updatedData.score; i++) {
+      scoreContainer.innerHTML += `
         <svg class="main-book__icon-star">
           <use href="#icon-star"></use>
         </svg>
       `;
     }
-
-    booksContainer.insertAdjacentHTML(
-      "beforeend",
-      createBookTemplate(newBook, bookStatus, bookScoreElems)
-    );
-    const newBookElem = document.getElementById(`book-${newBook.id}`);
-    addEventToEditAndDelBtnsForBooks([newBookElem]);
-
-    modal.classList.add("hidden");
-  } catch {
-    console.log("⚠️ خطا در اینترنت یا ارتباط با سرور");
   }
+
+  const res = await fetch(baseUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": secretKey,
+    },
+    body: JSON.stringify({ books: books }),
+  });
+  if (!res.ok) return console.log("⚠️ خطا در آپدیت سرور");
+  modal.classList.add("hidden");
+  console.log("کتاب با موفقیت ویرایش شد");
+};
+const addBook = async (newBook) => {
+  books.push(newBook);
+  updateBookCards(books);
+
+  let bookStatus = statusBookMap[newBook.status];
+  let bookScoreElems = "";
+  for (let i = 0; i < newBook.score; i++) {
+    bookScoreElems += `          
+      <svg class="main-book__icon-star">
+        <use href="#icon-star"></use>
+      </svg>
+    `;
+  }
+  booksContainer.insertAdjacentHTML(
+    "beforeend",
+    createBookTemplate(newBook, bookStatus, bookScoreElems)
+  );
+  const newBookElem = document.getElementById(`book-${newBook.id}`);
+  addEventToEditAndDelBtnsForBooks([newBookElem]);
+
+  const res = await fetch(baseUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": secretKey,
+    },
+    body: JSON.stringify({ books: books }),
+  });
+  if (!res.ok) return console.log("⚠️ خطا در آپدیت سرور");
+  modal.classList.add("hidden");
 };
 const updateBookCards = (books) => {
   allBooksCountElem.innerHTML = books.length;
