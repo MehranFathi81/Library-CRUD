@@ -169,7 +169,9 @@ const showModal = (modalTypeStr) => {
   modalDelBodyText.classList.add("hidden");
   modalDelBtn.classList.add("hidden");
   modalSaveBtn.classList.remove("hidden");
-
+  modalLengthTitle.innerHTML = formTitle.value.trim().length
+  modalLengthAuthor.innerHTML = formAuthor.value.trim().length
+  
   if (modalTypeStr === "addBook") {
     modalHeader.innerHTML = "افزودن کتاب جدید";
     formStatus.value = "new";
