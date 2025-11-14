@@ -273,6 +273,11 @@ const modalEvents = (event) => {
   if (event.target.classList[0] === "modal-screen__del-btn") {
     const bookId = Number(delBtnId.slice(5));
     removeBook(bookId);
+    setTimeout(() => {
+      if(books.length === 0){
+        mainEmptyState.classList.remove("hidden");
+      }
+    }, 1000);
   }
   // Save Button For Edit Book
   if (
@@ -302,13 +307,11 @@ const modalEvents = (event) => {
     event.target.classList[0] === "modal-screen__save-btn" &&
     modalHeader.innerHTML === "افزودن کتاب جدید"
   ) {
-    let lastBookId = 0;
-    if (booksContainer.lastElementChild) {
-      lastBookId = +booksContainer.lastElementChild.id.slice(5);
-    }
-
+    const bookId =
+      Number(Date.now().toString() + Math.floor(Math.random() * 10000).toString())
+      
     const newBook = {
-      id: ++lastBookId,
+      id: bookId,
       title: formTitle.value.trim(),
       author: formAuthor.value.trim(),
       status: formStatus.value,
@@ -316,6 +319,9 @@ const modalEvents = (event) => {
     };
     if (newBook.score <= 5 && newBook.score >= 1) {
       if (formAuthor.value.trim() && formTitle.value.trim()) {
+        if(books.length === 0){
+          mainEmptyState.classList.add("hidden");
+        }
         addBook(newBook);
       } else {
         console.log("عنوان کتاب و نام نویسنده نباید خالی باشد");
@@ -349,7 +355,7 @@ const editBook = async (bookId, updatedData) => {
     book.id === bookId ? { ...book, ...updatedData } : book
   );
   updateBookCards(books);
-  renderBooksByActiveFilter()
+  renderBooksByActiveFilter();
   const res = await fetch(baseUrl, {
     method: "PUT",
     headers: {
