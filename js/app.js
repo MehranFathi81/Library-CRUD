@@ -217,6 +217,8 @@ const addEventToFilterButtons = () => {
           books.forEach(addFilteredBook);
       }
     }
+    const allBookElem = document.querySelectorAll(".main-book");
+    addEventToEditAndDelBtnsForBooks(allBookElem);
   });
 };
 addEventToFilterButtons();
@@ -389,7 +391,7 @@ const addBook = async (newBook) => {
   books.push(newBook);
   updateBookCards(books);
   renderFilteredBooksInAddBook();
-  
+
   const res = await fetch(baseUrl, {
     method: "PUT",
     headers: {
