@@ -32,12 +32,12 @@ const statusBookMap = {
 };
 const mainEmptyState = document.querySelector(".main__empty-state");
 //* // Books Cards //
-
 const allBooksCountElem = document.querySelector(".header__books-count");
 const newBooksCountElem = document.querySelector(".header__new-count");
 const readingBooksCountElem = document.querySelector(".header__reading-count");
 const readBooksCountElem = document.querySelector(".header__read-count");
-
+//* // Toast //
+const toastContainer = document.querySelector(".toast-container");
 //* // Urls //
 const binId = "6912e5dd43b1c97be9a63b39";
 const secretKey =
@@ -274,7 +274,7 @@ const modalEvents = (event) => {
     const bookId = Number(delBtnId.slice(5));
     removeBook(bookId);
     setTimeout(() => {
-      if(books.length === 0){
+      if (books.length === 0) {
         mainEmptyState.classList.remove("hidden");
       }
     }, 1000);
@@ -307,9 +307,10 @@ const modalEvents = (event) => {
     event.target.classList[0] === "modal-screen__save-btn" &&
     modalHeader.innerHTML === "افزودن کتاب جدید"
   ) {
-    const bookId =
-      Number(Date.now().toString() + Math.floor(Math.random() * 10000).toString())
-      
+    const bookId = Number(
+      Date.now().toString() + Math.floor(Math.random() * 10000).toString()
+    );
+
     const newBook = {
       id: bookId,
       title: formTitle.value.trim(),
@@ -319,7 +320,7 @@ const modalEvents = (event) => {
     };
     if (newBook.score <= 5 && newBook.score >= 1) {
       if (formAuthor.value.trim() && formTitle.value.trim()) {
-        if(books.length === 0){
+        if (books.length === 0) {
           mainEmptyState.classList.add("hidden");
         }
         addBook(newBook);
@@ -439,6 +440,38 @@ const updateBookCards = (books) => {
   readingBooksCountElem.innerHTML = readingBooksCount;
   readBooksCountElem.innerHTML = readBooksCount;
 };
+// toastTypes = "error" || "success"
+const setToastMessage = (type, text) => {
+  if (type === "success") {
+    toastContainer.insertAdjacentHTML(
+      "afterbegin",
+      `
+      <div class="toast toast-success">
+        <svg>
+          <use href="#icon-success"></use>
+        </svg>
+        <p class="toast__message">${text}</p>
+      </div>
+      `
+    );
+  } else if (type === "error") {
+    toastContainer.insertAdjacentHTML(
+      "afterbegin",
+      `
+      <div class="toast toast-error">
+        <svg>
+          <use href="#icon-del-form"></use>
+        </svg>
+        <p class="toast__message">${text}</p>
+      </div>
+      `
+    );
+  }
+  setTimeout(()=> {
+    toastContainer.lastElementChild.remove()
+  },5000)
+};
+
 //* /////////////// Events ////////////////////
 addBookBtn.addEventListener("click", () => showModal("addBook"));
 modal.addEventListener("click", modalEvents);
