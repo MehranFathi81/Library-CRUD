@@ -51,12 +51,22 @@ let books = [];
 const initApp = async () => {
   window.addEventListener("load", async () => {
     booksContainer.innerHTML = "";
-    const response = await fetch(`${baseUrl}/latest`, {
-      headers: { "X-Master-Key": secretKey },
-    });
-    const data = await response.json();
-    books = data.record.books;
-    updateBookCards(books);
+    try {
+      const response = await fetch(`${baseUrl}/latest`, {
+        headers: { "X-Master-Key": secretKey },
+      });
+      if (!response.ok) {
+        setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
+        return;
+      }
+      const data = await response.json();
+      books = data.record.books;
+      updateBookCards(books);
+
+    } catch (err) {
+      setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
+      console.log(err.message);
+    }
 
     if (books.length) {
       mainEmptyState.classList.add("hidden");
@@ -296,10 +306,10 @@ const modalEvents = (event) => {
       if (formAuthor.value.trim() && formTitle.value.trim()) {
         editBook(bookId, updatedData);
       } else {
-        console.log("عنوان کتاب و نام نویسنده نباید خالی باشد");
+        setToastMessage("error", "لطفاً عنوان کتاب و نام نویسنده را وارد کنید");
       }
     } else {
-      console.log("امتیاز بیشتر از 5 و کمتر از 1 مجاز نیست");
+      setToastMessage("error", "امتیاز کتاب باید بین 1 تا 5 باشد");
     }
   }
   // Save Button For Add Book
@@ -325,17 +335,16 @@ const modalEvents = (event) => {
         }
         addBook(newBook);
       } else {
-        console.log("عنوان کتاب و نام نویسنده نباید خالی باشد");
+        setToastMessage("error", "لطفاً عنوان کتاب و نام نویسنده را وارد کنید");
       }
     } else {
-      console.log("امتیاز بیشتر از 5 و کمتر از 1 مجاز نیست");
+      setToastMessage("error", "امتیاز کتاب باید بین 1 تا 5 باشد");
     }
   }
 };
 const removeBook = async (bookId) => {
   books = books.filter((book) => book.id !== bookId);
   updateBookCards(books);
-  console.log(books);
 
   const res = await fetch(baseUrl, {
     method: "PUT",
@@ -345,11 +354,13 @@ const removeBook = async (bookId) => {
     },
     body: JSON.stringify({ books: books }),
   });
-  if (!res.ok) return console.log("⚠️ خطا در آپدیت سرور");
-
+  if (res.ok) {
+    setToastMessage("success", "کتاب با موفقیت حذف شد");
+  } else {
+    setToastMessage("error", "مشکلی در ارتباط با سرور رخ داد");
+  }
   document.getElementById(`book-${bookId}`).remove();
   modal.classList.add("hidden");
-  console.log("کتاب با موفقیت حذف شد ✅");
 };
 const editBook = async (bookId, updatedData) => {
   books = books.map((book) =>
@@ -365,9 +376,12 @@ const editBook = async (bookId, updatedData) => {
     },
     body: JSON.stringify({ books: books }),
   });
-  if (!res.ok) return console.log("⚠️ خطا در آپدیت سرور");
+  if (res.ok) {
+    setToastMessage("success", "کتاب با موفقیت ویرایش شد");
+  } else {
+    setToastMessage("error", "مشکلی در ارتباط با سرور رخ داد");
+  }
   modal.classList.add("hidden");
-  console.log("کتاب با موفقیت ویرایش شد");
 };
 const addBook = async (newBook) => {
   books.push(newBook);
@@ -382,7 +396,11 @@ const addBook = async (newBook) => {
     },
     body: JSON.stringify({ books: books }),
   });
-  if (!res.ok) return console.log("⚠️ خطا در آپدیت سرور");
+  if (res.ok) {
+    setToastMessage("success", "کتاب با موفقیت اضافه شد");
+  } else {
+    setToastMessage("error", "مشکلی در ارتباط با سرور رخ داد");
+  }
   modal.classList.add("hidden");
 };
 const renderBooksByActiveFilter = () => {
@@ -450,7 +468,7 @@ const setToastMessage = (type, text) => {
         <svg>
           <use href="#icon-success"></use>
         </svg>
-        <p class="toast__message">${text}</p>
+        <p class="toast__message"> ${text}</p>
       </div>
       `
     );
@@ -462,14 +480,14 @@ const setToastMessage = (type, text) => {
         <svg>
           <use href="#icon-del-form"></use>
         </svg>
-        <p class="toast__message">${text}</p>
+        <p class="toast__message"> ${text}</p>
       </div>
       `
     );
   }
-  setTimeout(()=> {
-    toastContainer.lastElementChild.remove()
-  },5000)
+  setTimeout(() => {
+    toastContainer.lastElementChild.remove();
+  }, 5000);
 };
 
 //* /////////////// Events ////////////////////
