@@ -490,6 +490,7 @@ const setToastMessage = (type, text) => {
   }, 5000);
 };
 
+
 //* /////////////// Events ////////////////////
 addBookBtn.addEventListener("click", () => showModal("addBook"));
 modal.addEventListener("click", modalEvents);
