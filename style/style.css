@@ -325,20 +325,35 @@ button {
 #main {
   margin-top: 2rem;
 }
-/* --------------------- Main Empty State --------------------- **/
-.main__empty-state {
+/* ----------- Main Auth Required & Main Empty State ----------- **/
+.main__empty-state,
+.main__auth-required {
   text-align: center;
   margin-top: 7rem;
 }
 .main__empty-state > span {
   font-size: 7rem;
 }
-.main__title {
+/* ----- Main Auth Required Header & Main Empty State Title ----- **/
+.main__title,
+.main__header {
   font-size: 2.5rem;
   font-weight: 600;
 }
+/* ----- Main Empty State Caption ----- **/
 .main__caption {
   font-size: 2.3rem;
+}
+/* ----- Main Auth Required Btns ----- **/
+.main__btns{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.btn-login,
+.btn-signup{
+  margin-top: 2rem;
+  width: 45rem;
 }
 /* --------------------- Main Books --------------------- **/
 .main__books {
@@ -579,6 +594,12 @@ form > div {
   #main {
     margin-top: 0;
   }
+  .main__header{
+    width: 41.6rem;
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0 auto;
+  }
   /* --------------------- Modal Screen --------------------- **/
   .modal-screen {
     padding: 12px;
@@ -620,6 +641,15 @@ form > div {
   }
   /* --------------------- Header Filter Btns --------------------- **/
   .header__filter-btn {
+    width: 100%;
+  }
+  /* --------------------- Main --------------------- **/
+  .main__header{
+    width: 100%;
+    font-size: 1.8rem;
+  }
+  .btn-login,
+  .btn-signup {
     width: 100%;
   }
   /* --------------------- Toast Container--------------------- **/
