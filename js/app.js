@@ -388,23 +388,8 @@ const editBook = async (bookId, updatedData) => {
 const addBook = async (newBook) => {
   books.push(newBook);
   updateBookCards(books);
-
-  let bookStatus = statusBookMap[newBook.status];
-  let bookScoreElems = "";
-  for (let i = 0; i < newBook.score; i++) {
-    bookScoreElems += `          
-      <svg class="main-book__icon-star">
-        <use href="#icon-star"></use>
-      </svg>
-    `;
-  }
-  booksContainer.insertAdjacentHTML(
-    "beforeend",
-    createBookTemplate(newBook, bookStatus, bookScoreElems)
-  );
-  const newBookElem = document.getElementById(`book-${newBook.id}`);
-  addEventToEditAndDelBtnsForBooks([newBookElem]);
-
+  renderFilteredBooksInAddBook();
+  
   const res = await fetch(baseUrl, {
     method: "PUT",
     headers: {
@@ -415,6 +400,43 @@ const addBook = async (newBook) => {
   });
   if (!res.ok) return console.log("⚠️ خطا در آپدیت سرور");
   modal.classList.add("hidden");
+};
+const renderFilteredBooksInAddBook = () => {
+  const activeBtn = document.querySelector(".header__bottom-wrapper .active");
+  const activeText = activeBtn ? activeBtn.textContent.trim() : "";
+
+  booksContainer.innerHTML = "";
+
+  const addBookToDOM = (book) => {
+    let bookStatus = statusBookMap[book.status];
+    let bookScoreElems = "";
+    for (let i = 0; i < book.score; i++) {
+      bookScoreElems += `
+        <svg class="main-book__icon-star">
+          <use href="#icon-star"></use>
+        </svg>
+      `;
+    }
+    booksContainer.insertAdjacentHTML(
+      "beforeend",
+      createBookTemplate(book, bookStatus, bookScoreElems)
+    );
+  };
+  switch (activeText) {
+    case "کتاب‌های جدید":
+      books.forEach((book) => book.status === "new" && addBookToDOM(book));
+      break;
+    case "درحال خواندن":
+      books.forEach((book) => book.status === "reading" && addBookToDOM(book));
+      break;
+    case "خوانده شده":
+      books.forEach((book) => book.status === "done" && addBookToDOM(book));
+      break;
+    default:
+      books.forEach(addBookToDOM);
+  }
+  const allBookElem = document.querySelectorAll(".main-book");
+  addEventToEditAndDelBtnsForBooks(allBookElem);
 };
 const updateBookCards = (books) => {
   allBooksCountElem.innerHTML = books.length;
