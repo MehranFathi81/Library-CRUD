@@ -349,32 +349,7 @@ const editBook = async (bookId, updatedData) => {
     book.id === bookId ? { ...book, ...updatedData } : book
   );
   updateBookCards(books);
-
-  const bookElem = document.getElementById(`book-${bookId}`);
-
-  if (bookElem) {
-    bookElem.querySelector(".main-book__header-text").textContent =
-      updatedData.title;
-
-    bookElem.querySelector(".main-book__author-name").textContent =
-      updatedData.author;
-
-    const bookElemStatus = bookElem.querySelector(".main-book__status");
-    bookElemStatus.textContent = statusBookMap[updatedData.status];
-    bookElemStatus.classList = `main-book__status ${updatedData.status}`;
-
-    const scoreContainer = bookElem.querySelector(".main-book__score");
-    scoreContainer.innerHTML = "";
-
-    for (let i = 0; i < updatedData.score; i++) {
-      scoreContainer.innerHTML += `
-        <svg class="main-book__icon-star">
-          <use href="#icon-star"></use>
-        </svg>
-      `;
-    }
-  }
-
+  renderBooksByActiveFilter()
   const res = await fetch(baseUrl, {
     method: "PUT",
     headers: {
@@ -390,7 +365,7 @@ const editBook = async (bookId, updatedData) => {
 const addBook = async (newBook) => {
   books.push(newBook);
   updateBookCards(books);
-  renderFilteredBooksInAddBook();
+  renderBooksByActiveFilter();
 
   const res = await fetch(baseUrl, {
     method: "PUT",
@@ -403,7 +378,7 @@ const addBook = async (newBook) => {
   if (!res.ok) return console.log("⚠️ خطا در آپدیت سرور");
   modal.classList.add("hidden");
 };
-const renderFilteredBooksInAddBook = () => {
+const renderBooksByActiveFilter = () => {
   const activeBtn = document.querySelector(".header__bottom-wrapper .active");
   const activeText = activeBtn ? activeBtn.textContent.trim() : "";
 
