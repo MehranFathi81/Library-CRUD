@@ -523,6 +523,7 @@ form > div {
   padding: 1rem;
   min-width: 27rem;
   max-width: 45rem;
+  max-height: fit-content;
 }
 /* --------------------- Toast --------------------- **/
 .toast {
