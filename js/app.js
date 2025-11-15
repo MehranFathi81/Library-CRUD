@@ -9,6 +9,9 @@ const modalLengthTitle = document.querySelector(
 const modalLengthAuthor = document.querySelector(
   ".modal-screen__maxlength-author"
 );
+//* // header Section //
+const headerCenterWrapper = document.querySelector(".header__center-wrapper")
+const headerBottomWrapper = document.querySelector(".header__bottom-wrapper")
 //* // Modal Btns //
 const modalCancelBtn = document.querySelector(".modal-screen__cancel-btn");
 const modalSaveBtn = document.querySelector(".modal-screen__save-btn");
@@ -21,7 +24,6 @@ const formStatus = document.querySelector("#form__status");
 const formScore = document.querySelector("#form__score");
 //* // Books //
 const addBookBtn = document.querySelector(".header__create-btn");
-const booksContainer = document.querySelector(".main__books");
 const statusBookMap = {
   "کتاب جدید": "new",
   "درحال خواندن": "reading",
@@ -30,6 +32,9 @@ const statusBookMap = {
   reading: "درحال خواندن",
   done: "خوانده شده",
 };
+//* //  Main Sections //
+const booksContainer = document.querySelector(".main__books");
+const mainAuthRequired = document.querySelector(".main__auth-required")
 const mainEmptyState = document.querySelector(".main__empty-state");
 //* // Books Cards //
 const allBooksCountElem = document.querySelector(".header__books-count");
@@ -47,6 +52,7 @@ const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 let isEditForm = false;
 let delBtnId = null;
 let books = [];
+let isLogin = false
 //* /////////////// Functions ///////////////
 const initApp = async () => {
   window.addEventListener("load", async () => {
@@ -94,7 +100,16 @@ const initApp = async () => {
     addEventToEditAndDelBtnsForBooks(allBookElem);
   });
 };
-initApp();
+if(isLogin){
+  headerBottomWrapper.classList.remove('hidden')
+  headerCenterWrapper.classList.remove('hidden')
+  mainAuthRequired.classList.add("hidden")
+  initApp();
+} else {
+  headerBottomWrapper.classList.add('hidden')
+  headerCenterWrapper.classList.add('hidden')
+  mainAuthRequired.classList.remove("hidden")
+}
 const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
   allBookElem.forEach((bookElem) => {
     bookElem.addEventListener("click", (event) => {
