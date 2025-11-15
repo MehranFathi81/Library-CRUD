@@ -148,15 +148,14 @@ table {
   justify-content: center;
   z-index: 50;
 }
-.new{
+.new {
   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
 }
-.reading{
+.reading {
   background: linear-gradient(135deg, #f59e0b, #d97706);
 }
-.done{
+.done {
   background: linear-gradient(135deg, #10b981, #059669);
-  
 }
 /* --------------------- App Css --------------------- **/
 html {
@@ -345,13 +344,13 @@ button {
   font-size: 2.3rem;
 }
 /* ----- Main Auth Required Btns ----- **/
-.main__btns{
+.main__btns {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .btn-login,
-.btn-signup{
+.btn-signup {
   margin-top: 2rem;
   width: 45rem;
 }
@@ -421,14 +420,28 @@ button {
 .modal-screen__header {
   font-size: 3rem;
 }
-/* --------------------- Modal Screen Body --------------------- **/
+/* --------------------- Modal Screen Body & login --------------------- **/
 .modal-screen__body {
   margin-top: 1rem;
 }
-.modal-screen__body-text {
+.modal-screen__body-text,
+.login__body-text {
   font-size: 1.8rem;
   width: 100%;
   margin-bottom: 3rem;
+}
+.login__body-text{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+  margin-top: -1.5rem;
+}
+.login__body-text span {
+  cursor: pointer;
+  color: #fff;
+}
+.login__body-text span:hover {
+  color: #10b981;
 }
 /* --------------------- Modal Screen form --------------------- **/
 form {
@@ -438,9 +451,35 @@ form > div {
   display: flex;
   justify-content: space-between;
 }
-.modal-screen svg {
+.modal-screen__del-icon {
   width: 80px;
   height: 80px;
+}
+/* --------------------- Login form --------------------- **/
+.form-login {
+  margin-bottom: 3rem;
+}
+.form-login__input {
+  position: relative;
+  margin-bottom: 2rem;
+}
+.form-login__input input {
+  margin-bottom: 0;
+}
+.form-login__icon {
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  height: 60%;
+  margin: auto;
+  stroke: #fff;
+  fill: #fff;
+  opacity: 0.6;
+}
+.form-login__icon--toggle{
+  cursor: pointer;
 }
 /* --------------------- Modal Screen Btns --------------------- **/
 .modal-screen__btns {
@@ -450,7 +489,8 @@ form > div {
 }
 .modal-screen__save-btn,
 .modal-screen__del-btn,
-.modal-screen__cancel-btn {
+.modal-screen__cancel-btn,
+.modal-screen__login-btn {
   width: 48.5%;
   height: 5rem;
   border-radius: 1rem;
@@ -460,10 +500,12 @@ form > div {
 .modal-screen__cancel-btn:hover {
   background: #4b5563;
 }
-.modal-screen__save-btn {
+.modal-screen__save-btn,
+.modal-screen__login-btn {
   background: #10b981;
 }
-.modal-screen__save-btn:hover {
+.modal-screen__save-btn:hover,
+.modal-screen__login-btn:hover {
   background: #059669;
 }
 .modal-screen__del-btn {
@@ -481,7 +523,6 @@ form > div {
   padding: 1rem;
   min-width: 27rem;
   max-width: 45rem;
-  /* background-color: #667eea; */
 }
 /* --------------------- Toast --------------------- **/
 .toast {
@@ -504,10 +545,10 @@ form > div {
   font-size: 1.8rem;
   text-align: justify;
 }
-.toast-success{
+.toast-success {
   background-color: #029946;
 }
-.toast-error{
+.toast-error {
   background-color: #dc2626;
 }
 /* --------------------- Media Query --------------------- **/
@@ -594,7 +635,7 @@ form > div {
   #main {
     margin-top: 0;
   }
-  .main__header{
+  .main__header {
     width: 41.6rem;
     font-size: 2rem;
     font-weight: 500;
@@ -608,19 +649,21 @@ form > div {
   .modal-screen__header {
     font-size: 2.5rem;
   }
-  .modal-screen svg {
+  .modal-screen__del-icon {
     width: 65px;
     height: 65px;
   }
   /* --------------------- Modal Screen Body --------------------- **/
-  .modal-screen__body-text {
+  .modal-screen__body-text,
+  .login__body-text {
     font-size: 1.6rem;
     margin-bottom: 2rem;
   }
   /* --------------------- Modal Screen Btns --------------------- **/
   .modal-screen__save-btn,
   .modal-screen__del-btn,
-  .modal-screen__cancel-btn {
+  .modal-screen__cancel-btn,
+  .modal-screen__login-btn {
     height: 4rem;
   }
 }
@@ -644,7 +687,7 @@ form > div {
     width: 100%;
   }
   /* --------------------- Main --------------------- **/
-  .main__header{
+  .main__header {
     width: 100%;
     font-size: 1.8rem;
   }
