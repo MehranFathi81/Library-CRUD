@@ -1,7 +1,7 @@
+import templates from "./templates.js";
 //* // Modal //
 const modal = document.querySelector(".modal-backdrop");
 const modalHeader = document.querySelector(".modal-screen__header");
-const modalDelIcon = modal.firstElementChild.firstElementChild;
 const modalDelBodyText = document.querySelector(".modal-screen__body-text");
 const modalLengthTitle = document.querySelector(
   ".modal-screen__maxlength-title"
@@ -10,18 +10,12 @@ const modalLengthAuthor = document.querySelector(
   ".modal-screen__maxlength-author"
 );
 //* // header Section //
-const headerCenterWrapper = document.querySelector(".header__center-wrapper")
-const headerBottomWrapper = document.querySelector(".header__bottom-wrapper")
+const headerCenterWrapper = document.querySelector(".header__center-wrapper");
+const headerBottomWrapper = document.querySelector(".header__bottom-wrapper");
 //* // Modal Btns //
 const modalCancelBtn = document.querySelector(".modal-screen__cancel-btn");
 const modalSaveBtn = document.querySelector(".modal-screen__save-btn");
 const modalDelBtn = document.querySelector(".modal-screen__del-btn");
-//* // Modal form //
-const modalForm = document.querySelector(".form");
-const formTitle = document.querySelector("#form__title");
-const formAuthor = document.querySelector("#form__author");
-const formStatus = document.querySelector("#form__status");
-const formScore = document.querySelector("#form__score");
 //* // Books //
 const addBookBtn = document.querySelector(".header__create-btn");
 const statusBookMap = {
@@ -34,7 +28,7 @@ const statusBookMap = {
 };
 //* //  Main Sections //
 const booksContainer = document.querySelector(".main__books");
-const mainAuthRequired = document.querySelector(".main__auth-required")
+const mainAuthRequired = document.querySelector(".main__auth-required");
 const mainEmptyState = document.querySelector(".main__empty-state");
 //* // Books Cards //
 const allBooksCountElem = document.querySelector(".header__books-count");
@@ -48,12 +42,17 @@ const binId = "6912e5dd43b1c97be9a63b39";
 const secretKey =
   "$2a$10$C1fEJMsNBHm6LSCPfqEceefchPTyK5WOyuc6kkX1jkFLRIJ2NNew.";
 const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
-//* /////////
-let isEditForm = false;
+//* ////////////////////////////////////////////////////
 let delBtnId = null;
+let editBtnId = null;
 let books = [];
-let isLogin = false
-//* /////////////// Functions ///////////////
+let isLogin = true;
+//* // Modal form //
+let formTitle = null;
+let formAuthor = null;
+let formStatus = null;
+let formScore = null;
+//* /////////////// initApp ///////////////
 const initApp = async () => {
   window.addEventListener("load", async () => {
     booksContainer.innerHTML = "";
@@ -68,10 +67,8 @@ const initApp = async () => {
       const data = await response.json();
       books = data.record.books;
       updateBookCards(books);
-
     } catch (err) {
       setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
-      console.log(err.message);
     }
 
     if (books.length) {
@@ -100,16 +97,70 @@ const initApp = async () => {
     addEventToEditAndDelBtnsForBooks(allBookElem);
   });
 };
-if(isLogin){
-  headerBottomWrapper.classList.remove('hidden')
-  headerCenterWrapper.classList.remove('hidden')
-  mainAuthRequired.classList.add("hidden")
+if (isLogin) {
+  headerBottomWrapper.classList.remove("hidden");
+  headerCenterWrapper.classList.remove("hidden");
+  mainAuthRequired.classList.add("hidden");
   initApp();
 } else {
-  headerBottomWrapper.classList.add('hidden')
-  headerCenterWrapper.classList.add('hidden')
-  mainAuthRequired.classList.remove("hidden")
+  headerBottomWrapper.classList.add("hidden");
+  headerCenterWrapper.classList.add("hidden");
+  mainAuthRequired.classList.remove("hidden");
 }
+//* /////////////// Functions For Modal Template ///////////////
+const showModal = (modalTypeStr) => {
+  const modalBody = document.querySelector(".modal-screen__body");
+  const modalDelIcon = modal.querySelector(".modal-screen__del-icon")  
+  
+  if (modalDelIcon) {    
+    modalDelIcon.remove();
+  }
+  modalBody.innerHTML = "";
+  modal.classList.remove("hidden");
+  modalSaveBtn.classList.add("hidden");
+  modalDelBtn.classList.add("hidden");
+
+  switch (modalTypeStr) {
+    case "addBook": {
+      modalSaveBtn.classList.remove("hidden");
+      modalHeader.innerHTML = "افزودن کتاب جدید";
+      // templates.temAndEditBook();
+      modalBody.insertAdjacentHTML(
+        "beforeend",templates.temAndEditBook()
+      )
+      break;
+    }
+    case "editBook": {
+      modalSaveBtn.classList.remove("hidden");
+      modalHeader.innerHTML = "ویرایش کتاب";
+      modalBody.insertAdjacentHTML(
+        "beforeend",templates.temAndEditBook()
+      )
+      templates.temAndEditBook();
+      break;
+    }
+    case "removeBook": {
+      modalDelBtn.classList.remove("hidden");
+      modalHeader.innerHTML = "حذف کتاب";
+      modal.firstElementChild.insertAdjacentHTML(
+        "afterbegin",templates.temRemoveBookIcon()
+      )
+      modalBody.insertAdjacentHTML(
+        "beforeend",templates.temRemoveBook()
+      )
+      // templates.tempRemoveBook();
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+  formTitle = document.querySelector("#form__title");
+  formAuthor = document.querySelector("#form__author");
+  formStatus = document.querySelector("#form__status");
+  formScore = document.querySelector("#form__score");
+};
+//* /////////////// Functions ///////////////
 const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
   allBookElem.forEach((bookElem) => {
     bookElem.addEventListener("click", (event) => {
@@ -117,6 +168,7 @@ const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
       const delBtn = event.target.closest(".main-book__del-icon");
       let targetBook = event.target.closest(".main-book");
       if (editBtn) {
+        showModal("editBook");
         editBtnId = targetBook.id;
         const targetBookStatus = targetBook
           .querySelector(".main-book__status")
@@ -132,7 +184,6 @@ const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
           targetBook.querySelector(".main-book__score").children.length;
 
         formStatus.value = statusBookMap[targetBookStatus];
-        showModal("editBook");
       } else if (delBtn) {
         delBtnId = targetBook.id;
         showModal("removeBook");
@@ -247,36 +298,6 @@ const addEventToFilterButtons = () => {
   });
 };
 addEventToFilterButtons();
-// modalTypes = "addBook" || "editBook" || "removeBook"
-const showModal = (modalTypeStr) => {
-  // "addBook" & "editBook"
-  modal.classList.remove("hidden");
-  modalForm.classList.remove("hidden");
-  modalDelIcon.classList.add("hidden");
-  modalDelBodyText.classList.add("hidden");
-  modalDelBtn.classList.add("hidden");
-  modalSaveBtn.classList.remove("hidden");
-  modalLengthTitle.innerHTML = formTitle.value.trim().length;
-  modalLengthAuthor.innerHTML = formAuthor.value.trim().length;
-
-  if (modalTypeStr === "addBook") {
-    modalHeader.innerHTML = "افزودن کتاب جدید";
-    formStatus.value = "new";
-    formTitle.value = "";
-    formAuthor.value = "";
-    formScore.value = "1";
-  } else if (modalTypeStr === "editBook") {
-    modalHeader.innerHTML = "ویرایش کتاب";
-  } else if (modalTypeStr === "removeBook") {
-    // "removeBook"
-    modalForm.classList.add("hidden");
-    modalHeader.innerHTML = "حذف کتاب";
-    modalDelIcon.classList.remove("hidden");
-    modalDelBodyText.classList.remove("hidden");
-    modalDelBtn.classList.remove("hidden");
-    modalSaveBtn.classList.add("hidden");
-  }
-};
 const formTitleAndFormAuthorLength = (event) => {
   if (event.target.id === "form__title") {
     modalLengthTitle.innerHTML = event.target.value.length;
@@ -310,7 +331,7 @@ const modalEvents = (event) => {
     modalHeader.innerHTML === "ویرایش کتاب"
   ) {
     const bookId = Number(editBtnId.slice(5));
-    updatedData = {
+    const updatedData = {
       id: bookId,
       title: formTitle.value.trim(),
       author: formAuthor.value.trim(),
@@ -504,13 +525,13 @@ const setToastMessage = (type, text) => {
     toastContainer.lastElementChild.remove();
   }, 5000);
 };
-
-
 //* /////////////// Events ////////////////////
 addBookBtn.addEventListener("click", () => showModal("addBook"));
 modal.addEventListener("click", modalEvents);
-formTitle.addEventListener("keyup", formTitleAndFormAuthorLength);
-formAuthor.addEventListener("keyup", formTitleAndFormAuthorLength);
+if (formTitle && formAuthor) {
+  formTitle.addEventListener("keyup", formTitleAndFormAuthorLength);
+  formAuthor.addEventListener("keyup", formTitleAndFormAuthorLength);
+}
 //* // Keys Events //
 document.addEventListener("keydown", (event) => {
   if (!modal.classList.contains("hidden") && event.key === "Escape") {
