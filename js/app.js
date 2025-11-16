@@ -48,7 +48,7 @@ const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 let delBtnId = null;
 let editBtnId = null;
 let books = [];
-let isLogin = false;
+let isLogin = true;
 //* // Modal form //
 let formTitle = null;
 let formAuthor = null;
@@ -89,7 +89,7 @@ const initApp = async () => {
 
         booksContainer.insertAdjacentHTML(
           "beforeend",
-          createBookTemplate(book, bookStatus, bookScoreElems)
+          templates.createBookTemplate(book, bookStatus, bookScoreElems)
         );
       });
     } else {
@@ -147,14 +147,14 @@ const showModal = (modalTypeStr) => {
       break;
     }
     case "signUp": {
-      modalLoginBtn.innerHTML = "ثبت نام"
+      modalLoginBtn.innerHTML = "ثبت نام";
       modalLoginBtn.classList.remove("hidden");
       modalHeader.innerHTML = "عضویت در کتابخانه";
       modalBody.insertAdjacentHTML("beforeend", templates.temLogin());
       break;
     }
     case "login": {
-      modalLoginBtn.innerHTML = "ورود"
+      modalLoginBtn.innerHTML = "ورود";
       modalLoginBtn.classList.remove("hidden");
       modalHeader.innerHTML = "ورود به حساب کاربری";
       modalBody.insertAdjacentHTML("beforeend", templates.temSignUp());
@@ -200,56 +200,7 @@ const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
     });
   });
 };
-const createBookTemplate = (book, bookStatus, bookScoreElems) => {
-  return `
-    <article class="main-book" id="book-${book.id}">
-      <!-- --------------------- Main Book header --------------------- -->
-      <div class="main-book__header">
-        <h3 class="main-book__header-text">${book.title}</h3>
-        <div class="main-book__header-icons">
-          <svg class="main-book__del-icon">
-            <linearGradient
-              x1="64.111"
-              y1="89.966"
-              x2="64.111"
-              y2="147.628"
-              id="IconifyId17ecdb2904d178eab21434"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop offset="0" stop-color="#82afc1" />
-              <stop offset="1" stop-color="#2f7889" />
-            </linearGradient>
-            <radialGradient
-              cx="65.53"
-              cy="12.998"
-              r="52.279"
-              id="IconifyId17ecdb2904d178eab21435"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop offset=".722" stop-color="#94d1e0" />
-              <stop offset="1" stop-color="#94d1e0" stop-opacity="0" />
-            </radialGradient>
-            <use href="#icon-delete"></use>
-          </svg>
-          <svg class="main-book__edit-icon">
-            <use href="#icon-edit"></use>
-          </svg>
-        </div>
-      </div>
-      <!-- --------------------- Main Book Author --------------------- -->
-      <div class="main-book__author">
-        نویسنده: <span class="main-book__author-name">${book.author}</span>
-      </div>
-      <!-- --------------------- Main Book Bottom Wrapper --------------------- -->
-      <div class="main-book__bottom-wrapper">
-        <p class="main-book__status ${book.status}" value="${book.status}">${bookStatus}</p>
-        <div class="main-book__score">
-          ${bookScoreElems}
-        </div>
-      </div>
-    </article>
-  `;
-};
+
 const addEventToFilterButtons = () => {
   const filterBtnsContainerElem = document.querySelector(
     ".header__bottom-wrapper"
@@ -277,7 +228,7 @@ const addEventToFilterButtons = () => {
         }
         booksContainer.insertAdjacentHTML(
           "beforeend",
-          createBookTemplate(book, bookStatus, bookScoreElems)
+          templates.createBookTemplate(book, bookStatus, bookScoreElems)
         );
       };
 
@@ -466,7 +417,7 @@ const renderBooksByActiveFilter = () => {
     }
     booksContainer.insertAdjacentHTML(
       "beforeend",
-      createBookTemplate(book, bookStatus, bookScoreElems)
+      templates.createBookTemplate(book, bookStatus, bookScoreElems)
     );
   };
   switch (activeText) {
@@ -508,26 +459,12 @@ const setToastMessage = (type, text) => {
   if (type === "success") {
     toastContainer.insertAdjacentHTML(
       "afterbegin",
-      `
-      <div class="toast toast-success">
-        <svg>
-          <use href="#icon-success"></use>
-        </svg>
-        <p class="toast__message"> ${text}</p>
-      </div>
-      `
+      templates.temSuccessMessage(text)
     );
   } else if (type === "error") {
     toastContainer.insertAdjacentHTML(
       "afterbegin",
-      `
-      <div class="toast toast-error">
-        <svg>
-          <use href="#icon-del-form"></use>
-        </svg>
-        <p class="toast__message"> ${text}</p>
-      </div>
-      `
+      templates.temErrorMessage(text)
     );
   }
   setTimeout(() => {

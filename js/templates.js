@@ -116,6 +116,76 @@ const templates = {
       <span>فراموشی رمز عبور</span>
     </div>
     `
-  }
+  },
+  createBookTemplate(book, bookStatus, bookScoreElems){
+  return `
+    <article class="main-book" id="book-${book.id}">
+      <!-- --------------------- Main Book header --------------------- -->
+      <div class="main-book__header">
+        <h3 class="main-book__header-text">${book.title}</h3>
+        <div class="main-book__header-icons">
+          <svg class="main-book__del-icon">
+            <linearGradient
+              x1="64.111"
+              y1="89.966"
+              x2="64.111"
+              y2="147.628"
+              id="IconifyId17ecdb2904d178eab21434"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0" stop-color="#82afc1" />
+              <stop offset="1" stop-color="#2f7889" />
+            </linearGradient>
+            <radialGradient
+              cx="65.53"
+              cy="12.998"
+              r="52.279"
+              id="IconifyId17ecdb2904d178eab21435"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset=".722" stop-color="#94d1e0" />
+              <stop offset="1" stop-color="#94d1e0" stop-opacity="0" />
+            </radialGradient>
+            <use href="#icon-delete"></use>
+          </svg>
+          <svg class="main-book__edit-icon">
+            <use href="#icon-edit"></use>
+          </svg>
+        </div>
+      </div>
+      <!-- --------------------- Main Book Author --------------------- -->
+      <div class="main-book__author">
+        نویسنده: <span class="main-book__author-name">${book.author}</span>
+      </div>
+      <!-- --------------------- Main Book Bottom Wrapper --------------------- -->
+      <div class="main-book__bottom-wrapper">
+        <p class="main-book__status ${book.status}" value="${book.status}">${bookStatus}</p>
+        <div class="main-book__score">
+          ${bookScoreElems}
+        </div>
+      </div>
+    </article>
+  `;
+  },
+  temSuccessMessage(text){
+    return`
+      <div class="toast toast-success">
+        <svg>
+          <use href="#icon-success"></use>
+        </svg>
+        <p class="toast__message"> ${text}</p>
+      </div>
+    `
+  },
+  temErrorMessage(text){
+    return`
+      <div class="toast toast-error">
+        <svg>
+          <use href="#icon-del-form"></use>
+        </svg>
+        <p class="toast__message"> ${text}</p>
+      </div>
+    `
+  },
 }
 export default templates;
