@@ -2,7 +2,6 @@ import templates from "./templates.js";
 //* // Modal //
 const modal = document.querySelector(".modal-backdrop");
 const modalHeader = document.querySelector(".modal-screen__header");
-const modalDelBodyText = document.querySelector(".modal-screen__body-text");
 const modalLengthTitle = document.querySelector(
   ".modal-screen__maxlength-title"
 );
@@ -13,7 +12,7 @@ const modalLengthAuthor = document.querySelector(
 const headerCenterWrapper = document.querySelector(".header__center-wrapper");
 const headerBottomWrapper = document.querySelector(".header__bottom-wrapper");
 //* // Modal Btns //
-const modalCancelBtn = document.querySelector(".modal-screen__cancel-btn");
+const modalLoginBtn = document.querySelector(".modal-screen__login-btn");
 const modalSaveBtn = document.querySelector(".modal-screen__save-btn");
 const modalDelBtn = document.querySelector(".modal-screen__del-btn");
 //* // Books //
@@ -26,6 +25,9 @@ const statusBookMap = {
   reading: "درحال خواندن",
   done: "خوانده شده",
 };
+//* //  Main Auth Required Btns //
+const mainBtnLogin = document.querySelector(".main__btn-login ");
+const mainBtnSignup = document.querySelector(".main__btn-signup");
 //* //  Main Sections //
 const booksContainer = document.querySelector(".main__books");
 const mainAuthRequired = document.querySelector(".main__auth-required");
@@ -46,7 +48,7 @@ const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 let delBtnId = null;
 let editBtnId = null;
 let books = [];
-let isLogin = true;
+let isLogin = false;
 //* // Modal form //
 let formTitle = null;
 let formAuthor = null;
@@ -110,32 +112,27 @@ if (isLogin) {
 //* /////////////// Functions For Modal Template ///////////////
 const showModal = (modalTypeStr) => {
   const modalBody = document.querySelector(".modal-screen__body");
-  const modalDelIcon = modal.querySelector(".modal-screen__del-icon")  
-  
-  if (modalDelIcon) {    
+  const modalDelIcon = modal.querySelector(".modal-screen__del-icon");
+  if (modalDelIcon) {
     modalDelIcon.remove();
   }
   modalBody.innerHTML = "";
   modal.classList.remove("hidden");
   modalSaveBtn.classList.add("hidden");
   modalDelBtn.classList.add("hidden");
+  modalLoginBtn.classList.add("hidden");
 
   switch (modalTypeStr) {
     case "addBook": {
       modalSaveBtn.classList.remove("hidden");
       modalHeader.innerHTML = "افزودن کتاب جدید";
-      // templates.temAndEditBook();
-      modalBody.insertAdjacentHTML(
-        "beforeend",templates.temAndEditBook()
-      )
+      modalBody.insertAdjacentHTML("beforeend", templates.temAndEditBook());
       break;
     }
     case "editBook": {
       modalSaveBtn.classList.remove("hidden");
       modalHeader.innerHTML = "ویرایش کتاب";
-      modalBody.insertAdjacentHTML(
-        "beforeend",templates.temAndEditBook()
-      )
+      modalBody.insertAdjacentHTML("beforeend", templates.temAndEditBook());
       templates.temAndEditBook();
       break;
     }
@@ -143,12 +140,24 @@ const showModal = (modalTypeStr) => {
       modalDelBtn.classList.remove("hidden");
       modalHeader.innerHTML = "حذف کتاب";
       modal.firstElementChild.insertAdjacentHTML(
-        "afterbegin",templates.temRemoveBookIcon()
-      )
-      modalBody.insertAdjacentHTML(
-        "beforeend",templates.temRemoveBook()
-      )
-      // templates.tempRemoveBook();
+        "afterbegin",
+        templates.temRemoveBookIcon()
+      );
+      modalBody.insertAdjacentHTML("beforeend", templates.temRemoveBook());
+      break;
+    }
+    case "signUp": {
+      modalLoginBtn.innerHTML = "ثبت نام"
+      modalLoginBtn.classList.remove("hidden");
+      modalHeader.innerHTML = "عضویت در کتابخانه";
+      modalBody.insertAdjacentHTML("beforeend", templates.temLogin());
+      break;
+    }
+    case "login": {
+      modalLoginBtn.innerHTML = "ورود"
+      modalLoginBtn.classList.remove("hidden");
+      modalHeader.innerHTML = "ورود به حساب کاربری";
+      modalBody.insertAdjacentHTML("beforeend", templates.temSignUp());
       break;
     }
     default: {
@@ -532,6 +541,8 @@ if (formTitle && formAuthor) {
   formTitle.addEventListener("keyup", formTitleAndFormAuthorLength);
   formAuthor.addEventListener("keyup", formTitleAndFormAuthorLength);
 }
+mainBtnLogin.addEventListener("click", () => showModal("login"));
+mainBtnSignup.addEventListener("click", () => showModal("signUp"));
 //* // Keys Events //
 document.addEventListener("keydown", (event) => {
   if (!modal.classList.contains("hidden") && event.key === "Escape") {

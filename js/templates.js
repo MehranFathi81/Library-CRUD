@@ -44,5 +44,78 @@ const templates = {
       </p>
     `
   },
+  temLogin(){
+    return`
+    <form class="form-login">
+      <!-- --------------------- Username --------------------- -->
+      <label for="form-login__username">نام کاربری</label>
+      <div class="form-login__input">
+        <input class="glass-card" type="text" 
+        name="form-login__username" id="form-login__username"/>
+        <svg class="form-login__icon">
+          <use href="#icon-username"></use>
+        </svg>
+      </div>
+      <!-- --------------------- Password --------------------- -->
+      <label for="form-login__password">رمز عبور</label>
+      <div class="form-login__input">
+        <input class="glass-card" type="password" 
+        name="form-login__password" id="form-login__password"/>
+        <svg class="form-login__icon form-login__icon--toggle">
+          <!-- <use href="#icon-show"></use> -->
+          <use href="#icon-hidden"></use>
+        </svg>
+      </div>
+      <!-- --------------------- Email --------------------- -->
+      <label for="form-login__email">آدرس ایمیل</label>
+      <div class="form-login__input">
+        <input class="glass-card" type="text" 
+        name="form-login__email" id="form-login__email"/>
+        <svg class="form-login__icon">
+          <use href="#icon-email"></use>
+        </svg>
+      </div>
+      <!-- --------------------- Phone --------------------- -->
+      <label for="form-login__phone">شماره موبایل</label>
+      <div class="form-login__input">
+        <input class="glass-card" type="text"
+          name="form-login__phone" id="form-login__phone"/>
+        <svg class="form-login__icon">
+          <use href="#icon-phone"></use>
+        </svg>
+      </div>
+    </form>
+    `
+  },
+  temSignUp(){
+    return`
+    <form class="form-login">
+      <!-- --------------------- Username --------------------- -->
+      <label for="form-login__username">نام کاربری</label>
+      <div class="form-login__input">
+        <input class="glass-card" type="text" 
+        name="form-login__username" id="form-login__username"/>
+        <svg class="form-login__icon">
+          <use href="#icon-username"></use>
+        </svg>
+      </div>
+      <!-- --------------------- Password --------------------- -->
+      <label for="form-login__password">رمز عبور</label>
+      <div class="form-login__input">
+        <input class="glass-card" type="password" 
+        name="form-login__password" id="form-login__password"/>
+        <svg class="form-login__icon form-login__icon--toggle">
+          <!-- <use href="#icon-show"></use> -->
+          <use href="#icon-hidden"></use>
+        </svg>
+      </div>
+    </form>
+    <!-- --------------------- Form Login Body --------------------- -->
+    <div class="login__body-text hidden">
+      <span>ورود با ایمیل</span>
+      <span>فراموشی رمز عبور</span>
+    </div>
+    `
+  }
 }
 export default templates;
