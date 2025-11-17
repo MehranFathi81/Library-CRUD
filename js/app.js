@@ -323,7 +323,7 @@ const modalEvents = (event) => {
     const bookId = Number(
       Date.now().toString() + Math.floor(Math.random() * 10000).toString()
     );
-
+    
     const newBook = {
       id: bookId,
       title: formTitle.value.trim(),
@@ -343,6 +343,36 @@ const modalEvents = (event) => {
     } else {
       setToastMessage("error", "امتیاز کتاب باید بین 1 تا 5 باشد");
     }
+  }
+  
+  
+  // Toggle Icon Hide And Show Password
+  if (
+    event.target.classList[1] === "form-login__icon--toggle" ||
+    (event.target.href &&
+      (event.target.href.animVal === "#icon-hidden" ||
+        event.target.href.animVal === "#icon-show"))
+  ) {
+    toggleIconHideAndShowPassword(event);
+  }
+};
+const toggleIconHideAndShowPassword = (event) => {
+  let iconElem;
+  let parentIconElem;
+  if(event.target.href){
+    iconElem = event.target.href.animVal
+    parentIconElem = event.target.parentElement
+  } else {
+    iconElem = event.target.firstElementChild.href.animVal
+    parentIconElem = event.target
+  }
+  
+  if(iconElem === "#icon-hidden"){
+    parentIconElem.innerHTML = `<use href="#icon-show"></use>`
+    formPassword.type = "text"
+  } else {
+    parentIconElem.innerHTML = `<use href="#icon-hidden"></use>`
+    formPassword.type = "password"
   }
 };
 const removeBook = async (bookId) => {
