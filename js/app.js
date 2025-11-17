@@ -48,12 +48,16 @@ const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 let delBtnId = null;
 let editBtnId = null;
 let books = [];
-let isLogin = true;
+let isLogin = false;
 //* // Modal form //
 let formTitle = null;
 let formAuthor = null;
 let formStatus = null;
 let formScore = null;
+let formUsername = null;
+let formPassword = null;
+let formEmail = null;
+let formPhone = null;
 //* /////////////// initApp ///////////////
 const initApp = async () => {
   window.addEventListener("load", async () => {
@@ -109,7 +113,7 @@ if (isLogin) {
   headerCenterWrapper.classList.add("hidden");
   mainAuthRequired.classList.remove("hidden");
 }
-//* /////////////// Functions For Modal Template ///////////////
+//* //modalTypeStr = "addBook"||"editBook"||"removeBook"||"login"||"signUp"
 const showModal = (modalTypeStr) => {
   const modalBody = document.querySelector(".modal-screen__body");
   const modalDelIcon = modal.querySelector(".modal-screen__del-icon");
@@ -168,6 +172,10 @@ const showModal = (modalTypeStr) => {
   formAuthor = document.querySelector("#form__author");
   formStatus = document.querySelector("#form__status");
   formScore = document.querySelector("#form__score");
+  formUsername = document.querySelector("#form-login__username");
+  formPassword = document.querySelector("#form-login__password");
+  formEmail = document.querySelector("#form-login__email");
+  formPhone = document.querySelector("#form-login__phone");
 };
 //* /////////////// Functions ///////////////
 const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
@@ -200,7 +208,6 @@ const addEventToEditAndDelBtnsForBooks = (allBookElem) => {
     });
   });
 };
-
 const addEventToFilterButtons = () => {
   const filterBtnsContainerElem = document.querySelector(
     ".header__bottom-wrapper"
