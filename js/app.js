@@ -323,7 +323,7 @@ const modalEvents = (event) => {
     const bookId = Number(
       Date.now().toString() + Math.floor(Math.random() * 10000).toString()
     );
-    
+
     const newBook = {
       id: bookId,
       title: formTitle.value.trim(),
@@ -344,8 +344,7 @@ const modalEvents = (event) => {
       setToastMessage("error", "امتیاز کتاب باید بین 1 تا 5 باشد");
     }
   }
-  
-  
+
   // Toggle Icon Hide And Show Password
   if (
     event.target.classList[1] === "form-login__icon--toggle" ||
@@ -355,24 +354,105 @@ const modalEvents = (event) => {
   ) {
     toggleIconHideAndShowPassword(event);
   }
+  // SignUp & Login
+  if (event.target.classList[0] === "modal-screen__login-btn") {
+    if (event.target.innerHTML === "ثبت نام") {
+      validateLoginAndSignUp("signUp");
+    } else {
+      validateLoginAndSignUp("login");
+    }
+  }
 };
 const toggleIconHideAndShowPassword = (event) => {
   let iconElem;
   let parentIconElem;
-  if(event.target.href){
-    iconElem = event.target.href.animVal
-    parentIconElem = event.target.parentElement
+  if (event.target.href) {
+    iconElem = event.target.href.animVal;
+    parentIconElem = event.target.parentElement;
   } else {
-    iconElem = event.target.firstElementChild.href.animVal
-    parentIconElem = event.target
+    iconElem = event.target.firstElementChild.href.animVal;
+    parentIconElem = event.target;
   }
-  
-  if(iconElem === "#icon-hidden"){
-    parentIconElem.innerHTML = `<use href="#icon-show"></use>`
-    formPassword.type = "text"
+
+  if (iconElem === "#icon-hidden") {
+    parentIconElem.innerHTML = `<use href="#icon-show"></use>`;
+    formPassword.type = "text";
   } else {
-    parentIconElem.innerHTML = `<use href="#icon-hidden"></use>`
-    formPassword.type = "password"
+    parentIconElem.innerHTML = `<use href="#icon-hidden"></use>`;
+    formPassword.type = "password";
+  }
+};
+const validateLoginAndSignUp = (modalTypeStr) => {
+  if (modalTypeStr === "signUp") {
+    // */Regex
+    const lengthRegex = /^\w{8,15}$/;
+    const firstCharIsNumber = /^\d/;
+    const regexEmail =
+      /^([a-zA-Z0-9]([._-][a-zA-Z0-9]+)?){1,30}@[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)?(\.[a-zA-Z]{2,24})+$/;
+    const regexPhone =
+      /^(\+98|98|0)9(1[0-9]|2[0-2]|30|33|34|35|36|37|38|39|90|91|93|94|98)\d{7}$/;
+    
+      // */ Trim Inputs
+    const formPasswordValue = formPassword.value.trim();
+    const formUsernameValue = formUsername.value.trim();
+    const formEmailValue = formEmail.value.trim();
+    const formPhoneValue = formPhone.value.trim();
+
+    // check Functions
+    const checkUsername = () => {
+      if (formUsernameValue === "") {
+        setToastMessage("error", "نام کاربری خود را وارد نماید");
+        return false;
+      } else if (!lengthRegex.test(formUsernameValue)) {
+        setToastMessage("error", "نام کاربری باید بین ۸ تا ۱۵ کاراکتر باشد");
+        return false;
+      } else if (firstCharIsNumber.test(formUsernameValue)) {
+        setToastMessage("error", "شروع نام کاربری با عدد مجاز نیست");
+        return false;
+      } else {
+        return true;
+      }
+    };
+    const checkPassword = () => {
+      if (formPasswordValue === "") {
+        setToastMessage("error", "رمز عبور خود را وارد نماید");
+        return false;
+      } else if (!lengthRegex.test(formPasswordValue)) {
+        setToastMessage("error", "رمز عبور باید بین ۸ تا ۱۵ کاراکتر باشد");
+        return false;
+      } else {
+        return true;
+      }
+    };
+    const checkEmail = () => {
+      if (!regexEmail.test(formEmailValue)) {
+        setToastMessage("error", "ایمیل شما معتبر نمیباشد");
+        return false;
+      } else {
+        return true;
+      }
+    };
+    const checkPhone = () => {
+      if (!regexPhone.test(formPhoneValue)) {
+        setToastMessage("error", "شماره تماس شما معتبر نیست");
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    // Validation chain
+    let isValid = checkUsername()
+      && checkPassword()
+      && checkEmail()
+      && checkPhone();
+    if (isValid) {
+      // this Line For Add createNewUser()
+      setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید")
+      return true
+    }
+  } else {
+    return true
   }
 };
 const removeBook = async (bookId) => {
