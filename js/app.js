@@ -154,14 +154,14 @@ const showModal = (modalTypeStr) => {
       modalLoginBtn.innerHTML = "ثبت نام";
       modalLoginBtn.classList.remove("hidden");
       modalHeader.innerHTML = "عضویت در کتابخانه";
-      modalBody.insertAdjacentHTML("beforeend", templates.temLogin());
+      modalBody.insertAdjacentHTML("beforeend", templates.temSignUp());
       break;
     }
     case "login": {
       modalLoginBtn.innerHTML = "ورود";
       modalLoginBtn.classList.remove("hidden");
       modalHeader.innerHTML = "ورود به حساب کاربری";
-      modalBody.insertAdjacentHTML("beforeend", templates.temSignUp());
+      modalBody.insertAdjacentHTML("beforeend", templates.temLogin());
       break;
     }
     default: {

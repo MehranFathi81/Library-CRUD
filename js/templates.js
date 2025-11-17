@@ -44,7 +44,7 @@ const templates = {
       </p>
     `
   },
-  temLogin(){
+  temSignUp(){
     return`
     <form class="form-login">
       <!-- --------------------- Username --------------------- -->
@@ -87,7 +87,7 @@ const templates = {
     </form>
     `
   },
-  temSignUp(){
+  temLogin(){
     return`
     <form class="form-login">
       <!-- --------------------- Username --------------------- -->
@@ -111,7 +111,7 @@ const templates = {
       </div>
     </form>
     <!-- --------------------- Form Login Body --------------------- -->
-    <div class="login__body-text hidden">
+    <div class="login__body-text">
       <span>ورود با ایمیل</span>
       <span>فراموشی رمز عبور</span>
     </div>
