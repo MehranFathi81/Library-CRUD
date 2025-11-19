@@ -385,14 +385,15 @@ const toggleIconHideAndShowPassword = (event) => {
 const validateLoginAndSignUp = (modalTypeStr) => {
   if (modalTypeStr === "signUp") {
     // */Regex
-    const lengthRegex = /^\w{8,15}$/;
     const firstCharIsNumber = /^\d/;
+    const usernameRegex = /^[\u0600-\u06FFa-zA-Z0-9_]{5,}$/u;
+    const passwordRegex = /^.{8,}$/;
     const regexEmail =
       /^([a-zA-Z0-9]([._-][a-zA-Z0-9]+)?){1,30}@[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)?(\.[a-zA-Z]{2,24})+$/;
     const regexPhone =
       /^(\+98|98|0)9(1[0-9]|2[0-2]|30|33|34|35|36|37|38|39|90|91|93|94|98)\d{7}$/;
-    
-      // */ Trim Inputs
+
+    // */ Trim Inputs
     const formPasswordValue = formPassword.value.trim();
     const formUsernameValue = formUsername.value.trim();
     const formEmailValue = formEmail.value.trim();
@@ -403,8 +404,8 @@ const validateLoginAndSignUp = (modalTypeStr) => {
       if (formUsernameValue === "") {
         setToastMessage("error", "نام کاربری خود را وارد نماید");
         return false;
-      } else if (!lengthRegex.test(formUsernameValue)) {
-        setToastMessage("error", "نام کاربری باید بین ۸ تا ۱۵ کاراکتر باشد");
+      } else if (!usernameRegex.test(formUsernameValue)) {
+        setToastMessage("error", "نام کاربری باید بیشتر از ۵ کاراکتر باشد");
         return false;
       } else if (firstCharIsNumber.test(formUsernameValue)) {
         setToastMessage("error", "شروع نام کاربری با عدد مجاز نیست");
@@ -417,8 +418,8 @@ const validateLoginAndSignUp = (modalTypeStr) => {
       if (formPasswordValue === "") {
         setToastMessage("error", "رمز عبور خود را وارد نماید");
         return false;
-      } else if (!lengthRegex.test(formPasswordValue)) {
-        setToastMessage("error", "رمز عبور باید بین ۸ تا ۱۵ کاراکتر باشد");
+      } else if (!passwordRegex.test(formPasswordValue)) {
+        setToastMessage("error", "رمز عبور باید بیشتر از ۸ کاراکتر باشد");
         return false;
       } else {
         return true;
@@ -442,17 +443,15 @@ const validateLoginAndSignUp = (modalTypeStr) => {
     };
 
     // Validation chain
-    let isValid = checkUsername()
-      && checkPassword()
-      && checkEmail()
-      && checkPhone();
+    let isValid =
+      checkUsername() && checkPassword() && checkEmail() && checkPhone();
     if (isValid) {
       // this Line For Add createNewUser()
-      setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید")
-      return true
+      setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید");
+      return true;
     }
   } else {
-    return true
+    return true;
   }
 };
 const removeBook = async (bookId) => {
