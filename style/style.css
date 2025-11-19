@@ -524,6 +524,7 @@ form > div {
   min-width: 27rem;
   max-width: 45rem;
   max-height: fit-content;
+  z-index: 9999;
 }
 /* --------------------- Toast --------------------- **/
 .toast {
