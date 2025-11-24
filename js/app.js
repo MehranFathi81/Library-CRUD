@@ -441,18 +441,23 @@ const validateLoginAndSignUp = (modalTypeStr) => {
         return true;
       }
     };
-
+    
     // Validation chain
     let isValid =
-      checkUsername() && checkPassword() && checkEmail() && checkPhone();
+    checkUsername() && checkPassword() && checkEmail() && checkPhone();
     if (isValid) {
-      // this Line For Add createNewUser()
       setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید");
       return true;
     }
   } else {
-    return true;
   }
+  return true;
+  function generateToken() {
+    return (
+      Date.now().toString(36) + Math.random().toString(36).substring(2, 10)
+    );
+  }
+
 };
 const removeBook = async (bookId) => {
   books = books.filter((book) => book.id !== bookId);
