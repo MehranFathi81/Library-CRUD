@@ -48,7 +48,8 @@ const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 let delBtnId = null;
 let editBtnId = null;
 let books = [];
-let isLogin = false;
+const username = localStorage.getItem("username")
+const token = localStorage.getItem("token")
 //* // Modal form //
 let formTitle = null;
 let formAuthor = null;
@@ -103,7 +104,7 @@ const initApp = async () => {
     addEventToEditAndDelBtnsForBooks(allBookElem);
   });
 };
-if (isLogin) {
+if (username && token) {
   headerBottomWrapper.classList.remove("hidden");
   headerCenterWrapper.classList.remove("hidden");
   mainAuthRequired.classList.add("hidden");
