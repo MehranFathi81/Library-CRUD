@@ -62,26 +62,32 @@ let formPassword = null;
 let formEmail = null;
 let formPhone = null;
 //* /////////////// initApp ///////////////
+const getDataFromApi = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/latest`, {
+      headers: { "X-Master-Key": secretKey },
+    });
+    if (!response.ok) {
+      setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
+      return;
+    }
+    const data = await response.json();
+    users = data.record.users;
+    user = users[username];
+    books = user.books
+
+    updateBookCards(user.books);
+  } catch (err) {
+    setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
+  }
+}
+getDataFromApi()
+
 const initApp = async () => {
   window.addEventListener("load", async () => {
     booksContainer.innerHTML = "";
-    try {
-      const response = await fetch(`${baseUrl}/latest`, {
-        headers: { "X-Master-Key": secretKey },
-      });
-      if (!response.ok) {
-        setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
-        return;
-      }
-      const data = await response.json();
-      users = data.record.users;
-      user = users[username];
-      books = user.books;
-      updateBookCards(books);
-    } catch (err) {
-      setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
-    }
-
+    await getDataFromApi()
+    
     if (books.length) {
       mainEmptyState.classList.add("hidden");
       books.forEach((book) => {
@@ -108,7 +114,7 @@ const initApp = async () => {
     addEventToEditAndDelBtnsForBooks(allBookElem);
   });
 };
-if (username && token && "") {
+if (username && token) {
   headerBottomWrapper.classList.remove("hidden");
   headerCenterWrapper.classList.remove("hidden");
   mainAuthRequired.classList.add("hidden");
