@@ -42,7 +42,7 @@ const toastContainer = document.querySelector(".toast-container");
 //* // Urls //
 const binId = "6912e5dd43b1c97be9a63b39";
 const secretKey =
-  "$2a$10$C1fEJMsNBHm6LSCPfqEceefchPTyK5WOyuc6kkX1jkFLRIJ2NNew.";
+"$2a$10$C1fEJMsNBHm6LSCPfqEceefchPTyK5WOyuc6kkX1jkFLRIJ2NNew.";
 const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 //* ////////////////////////////////////////////////////
 let delBtnId = null;
@@ -446,6 +446,8 @@ const validateLoginAndSignUp = (modalTypeStr) => {
     let isValid =
     checkUsername() && checkPassword() && checkEmail() && checkPhone();
     if (isValid) {
+      localStorage.setItem("token", generateToken())
+      localStorage.setItem("username", formUsernameValue)
       setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید");
       return true;
     }
