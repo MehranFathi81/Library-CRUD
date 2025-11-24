@@ -42,7 +42,7 @@ const toastContainer = document.querySelector(".toast-container");
 //* // Urls //
 const binId = "6912e5dd43b1c97be9a63b39";
 const secretKey =
-"$2a$10$C1fEJMsNBHm6LSCPfqEceefchPTyK5WOyuc6kkX1jkFLRIJ2NNew.";
+  "$2a$10$C1fEJMsNBHm6LSCPfqEceefchPTyK5WOyuc6kkX1jkFLRIJ2NNew.";
 const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 //* ////////////////////////////////////////////////////
 let delBtnId = null;
@@ -50,8 +50,8 @@ let editBtnId = null;
 let books = [];
 let users = {};
 let user = {};
-const username = localStorage.getItem("username")
-const token = localStorage.getItem("token")
+const username = localStorage.getItem("username");
+const token = localStorage.getItem("token");
 //* // Modal form //
 let formTitle = null;
 let formAuthor = null;
@@ -74,8 +74,8 @@ const initApp = async () => {
         return;
       }
       const data = await response.json();
-      users = data.record.users
-      user = users[username]
+      users = data.record.users;
+      user = users[username];
       books = user.books;
       updateBookCards(books);
     } catch (err) {
@@ -108,7 +108,7 @@ const initApp = async () => {
     addEventToEditAndDelBtnsForBooks(allBookElem);
   });
 };
-if (username && token) {
+if (username && token && "") {
   headerBottomWrapper.classList.remove("hidden");
   headerCenterWrapper.classList.remove("hidden");
   mainAuthRequired.classList.add("hidden");
@@ -388,6 +388,11 @@ const toggleIconHideAndShowPassword = (event) => {
   }
 };
 const validateLoginAndSignUp = (modalTypeStr) => {
+  // */ Trim Inputs
+  const formPasswordValue = formPassword.value.trim();
+  const formUsernameValue = formUsername.value.trim();
+  const formEmailValue = formEmail.value.trim();
+  const formPhoneValue = formPhone.value.trim();
   if (modalTypeStr === "signUp") {
     // */Regex
     const firstCharIsNumber = /^\d/;
@@ -397,12 +402,6 @@ const validateLoginAndSignUp = (modalTypeStr) => {
       /^([a-zA-Z0-9]([._-][a-zA-Z0-9]+)?){1,30}@[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)?(\.[a-zA-Z]{2,24})+$/;
     const regexPhone =
       /^(\+98|98|0)9(1[0-9]|2[0-2]|30|33|34|35|36|37|38|39|90|91|93|94|98)\d{7}$/;
-
-    // */ Trim Inputs
-    const formPasswordValue = formPassword.value.trim();
-    const formUsernameValue = formUsername.value.trim();
-    const formEmailValue = formEmail.value.trim();
-    const formPhoneValue = formPhone.value.trim();
 
     // check Functions
     const checkUsername = () => {
@@ -446,14 +445,12 @@ const validateLoginAndSignUp = (modalTypeStr) => {
         return true;
       }
     };
-    
+
     // Validation chain
     let isValid =
-    checkUsername() && checkPassword() && checkEmail() && checkPhone();
+      checkUsername() && checkPassword() && checkEmail() && checkPhone();
     if (isValid) {
-      localStorage.setItem("token", generateToken())
-      localStorage.setItem("username", formUsernameValue)
-      setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید");
+      addUser();
       return true;
     }
   } else {
@@ -464,7 +461,55 @@ const validateLoginAndSignUp = (modalTypeStr) => {
       Date.now().toString(36) + Math.random().toString(36).substring(2, 10)
     );
   }
+  async function addUser() {
+    const newUser = {
+      username: formUsernameValue,
+      password: formPasswordValue,
+      email: formEmailValue,
+      phone: formPhoneValue,
+      token: localStorage.getItem("token"),
+      books: [],
+    };
+    const data = await fetch(baseUrl, {
+      headers: {
+        "X-Master-Key": secretKey,
+      },
+    }).then((res) => res.json());
 
+    if (!data) {
+      setToastMessage("error", "مشکلی در ارتباط با سرور رخ داد");
+      return false;
+    }
+    users = data.record.users;
+
+    if (!users[newUser.username]) {
+      users[newUser.username] = newUser;
+      books = newUser.books
+      const res = await fetch(baseUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": secretKey,
+        },
+        body: JSON.stringify({ users }),
+      });
+
+      if (res.ok) {
+        setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید");
+        localStorage.setItem("token", generateToken());
+        localStorage.setItem("username", formUsernameValue);
+        headerBottomWrapper.classList.remove("hidden");
+        headerCenterWrapper.classList.remove("hidden");
+        mainAuthRequired.classList.add("hidden");
+        modal.classList.add("hidden");
+        initApp();
+      } else {
+        setToastMessage("error", "مشکلی در ارتباط با سرور رخ داد");
+      }
+    } else {
+      setToastMessage("error", "این نام کاربری قبلاً استفاده شده");
+    }
+  }
 };
 const removeBook = async (bookId) => {
   books = books.filter((book) => book.id !== bookId);
