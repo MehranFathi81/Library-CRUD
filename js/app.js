@@ -519,6 +519,7 @@ const validateLoginAndSignUp = (modalTypeStr) => {
 };
 const removeBook = async (bookId) => {
   books = books.filter((book) => book.id !== bookId);
+  users[username].books = books;
   updateBookCards(books);
 
   const res = await fetch(baseUrl, {
@@ -527,7 +528,7 @@ const removeBook = async (bookId) => {
       "Content-Type": "application/json",
       "X-Master-Key": secretKey,
     },
-    body: JSON.stringify({ books: books }),
+    body: JSON.stringify({ users }),
   });
   if (res.ok) {
     setToastMessage("success", "کتاب با موفقیت حذف شد");
@@ -541,6 +542,7 @@ const editBook = async (bookId, updatedData) => {
   books = books.map((book) =>
     book.id === bookId ? { ...book, ...updatedData } : book
   );
+  users[username].books = books;
   updateBookCards(books);
   renderBooksByActiveFilter();
   const res = await fetch(baseUrl, {
@@ -549,7 +551,7 @@ const editBook = async (bookId, updatedData) => {
       "Content-Type": "application/json",
       "X-Master-Key": secretKey,
     },
-    body: JSON.stringify({ books: books }),
+    body: JSON.stringify({ users }),
   });
   if (res.ok) {
     setToastMessage("success", "کتاب با موفقیت ویرایش شد");
@@ -560,23 +562,24 @@ const editBook = async (bookId, updatedData) => {
 };
 const addBook = async (newBook) => {
   books.push(newBook);
+  users[username].books = books;
   updateBookCards(books);
   renderBooksByActiveFilter();
-
+  
   const res = await fetch(baseUrl, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       "X-Master-Key": secretKey,
     },
-    body: JSON.stringify({ books: books }),
+    body: JSON.stringify({ users }),
   });
+  modal.classList.add("hidden");
   if (res.ok) {
     setToastMessage("success", "کتاب با موفقیت اضافه شد");
   } else {
     setToastMessage("error", "مشکلی در ارتباط با سرور رخ داد");
   }
-  modal.classList.add("hidden");
 };
 const renderBooksByActiveFilter = () => {
   const activeBtn = document.querySelector(".header__bottom-wrapper .active");
