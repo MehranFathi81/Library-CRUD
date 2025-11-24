@@ -48,6 +48,8 @@ const baseUrl = `https://api.jsonbin.io/v3/b/${binId}`;
 let delBtnId = null;
 let editBtnId = null;
 let books = [];
+let users = {};
+let user = {};
 const username = localStorage.getItem("username")
 const token = localStorage.getItem("token")
 //* // Modal form //
@@ -72,7 +74,9 @@ const initApp = async () => {
         return;
       }
       const data = await response.json();
-      books = data.record.books;
+      users = data.record.users
+      user = users[username]
+      books = user.books;
       updateBookCards(books);
     } catch (err) {
       setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
