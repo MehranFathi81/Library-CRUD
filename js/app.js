@@ -508,7 +508,7 @@ const validateLoginAndSignUp = (modalTypeStr) => {
         headerCenterWrapper.classList.remove("hidden");
         mainAuthRequired.classList.add("hidden");
         modal.classList.add("hidden");
-        initApp();
+        location.reload()
       } else {
         setToastMessage("error", "مشکلی در ارتباط با سرور رخ داد");
       }
