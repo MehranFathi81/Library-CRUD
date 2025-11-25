@@ -697,6 +697,9 @@ form > div {
   .glass-card {
     padding: 0.5rem;
   }
+  .modal-screen{
+    padding: 1rem;
+  }
   /* --------------------- Header Bottom Wrapper --------------------- **/
   .header__bottom-wrapper {
     flex-direction: column;
