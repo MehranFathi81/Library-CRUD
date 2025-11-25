@@ -301,8 +301,7 @@ const formTitleAndFormAuthorLength = (event) => {
 const modalEvents = (event) => {
   // Cancel Button
   if (
-    event.target.classList[0] === "modal-screen__cancel-btn" ||
-    event.target.classList[0] === "modal-backdrop"
+    event.target.classList[0] === "modal-screen__cancel-btn"
   ) {
     modal.classList.add("hidden");
   }
