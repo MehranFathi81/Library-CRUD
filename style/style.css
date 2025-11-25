@@ -273,16 +273,25 @@ button {
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
   }
 }
-.header__create-btn {
+.header__center-btns{
+  display: flex;
+  gap: 1rem;
+}
+.header__create-btn,
+.header__logout-btn {
   width: 25rem;
   padding: 12px 24px;
   animation: pulse-glow 2s infinite;
   transition: all 0.3s ease;
 }
-.header__create-btn:hover {
+.header__create-btn:hover, 
+.header__logout-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+.header__logout-btn{
+  width: 10rem;
 }
 /* --------------------- Header Bottom Wrapper --------------------- **/
 .header__bottom-wrapper {
@@ -582,9 +591,13 @@ form > div {
     font-size: 1.8rem;
   }
   /* --------------------- Header Create Btn --------------------- **/
-  .header__create-btn {
+  .header__create-btn,
+  .header__logout-btn  {
     width: 18rem;
     padding: 9px 18px;
+  }
+  .header__logout-btn {
+    width: 8rem;
   }
   /* --------------------- Main Book --------------------- **/
   .main-book {
@@ -626,7 +639,8 @@ form > div {
     flex-direction: column;
   }
   /* --------------------- Header Create Btn --------------------- **/
-  .header__create-btn {
+  .header__center-btns{
+    /* flex-direction: column; */
     margin-top: 2rem;
   }
   /* --------------------- Header Bottom Wrapper --------------------- **/
