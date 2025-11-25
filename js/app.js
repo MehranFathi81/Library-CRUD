@@ -392,6 +392,13 @@ const modalEvents = (event) => {
     localStorage.removeItem("username");
     location.reload()
   }
+  // login text
+  if(
+    event.target.innerHTML === "ورود با ایمیل" ||
+    event.target.innerHTML === "فراموشی رمز عبور"
+  ){
+    setToastMessage("error", "این بخش فعلاً در دسترس نیست")
+  }
 };
 const toggleIconHideAndShowPassword = (event) => {
   let iconElem;
