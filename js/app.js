@@ -388,8 +388,9 @@ const modalEvents = (event) => {
   }
   // LogOut
   if(event.target.classList[0] === "modal-screen__logout-btn"){
-    console.log("logOut");
-    
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    location.reload()
   }
 };
 const toggleIconHideAndShowPassword = (event) => {
