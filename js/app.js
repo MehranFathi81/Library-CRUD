@@ -15,8 +15,10 @@ const headerBottomWrapper = document.querySelector(".header__bottom-wrapper");
 const modalLoginBtn = document.querySelector(".modal-screen__login-btn");
 const modalSaveBtn = document.querySelector(".modal-screen__save-btn");
 const modalDelBtn = document.querySelector(".modal-screen__del-btn");
+const modalLogOutBtn = document.querySelector(".modal-screen__logout-btn");
 //* // Books //
 const addBookBtn = document.querySelector(".header__create-btn");
+const logOutBtn = document.querySelector(".header__logout-btn");
 const statusBookMap = {
   "کتاب جدید": "new",
   "درحال خواندن": "reading",
@@ -126,7 +128,7 @@ if (username && token) {
   headerCenterWrapper.classList.add("hidden");
   mainAuthRequired.classList.remove("hidden");
 }
-//* //modalTypeStr = "addBook"||"editBook"||"removeBook"||"login"||"signUp"
+//* //modalTypeStr = "addBook"||"editBook"||"removeBook"||"login"||"signUp"||"logOut"
 const showModal = (modalTypeStr) => {
   const modalBody = document.querySelector(".modal-screen__body");
   const modalDelIcon = modal.querySelector(".modal-screen__del-icon");
@@ -138,7 +140,8 @@ const showModal = (modalTypeStr) => {
   modalSaveBtn.classList.add("hidden");
   modalDelBtn.classList.add("hidden");
   modalLoginBtn.classList.add("hidden");
-
+  modalLogOutBtn.classList.add("hidden");
+  
   switch (modalTypeStr) {
     case "addBook": {
       modalSaveBtn.classList.remove("hidden");
@@ -176,6 +179,15 @@ const showModal = (modalTypeStr) => {
       modalHeader.innerHTML = "ورود به حساب کاربری";
       modalBody.insertAdjacentHTML("beforeend", templates.temLogin());
       break;
+    }
+    case "logOut":{
+      modalLogOutBtn.classList.remove("hidden");
+      modalHeader.innerHTML = "خارج شدن از حساب کاربری";
+      modal.firstElementChild.insertAdjacentHTML(
+        "afterbegin",
+        templates.temRemoveBookIcon()
+      );
+      modalBody.insertAdjacentHTML("beforeend", templates.temLogOut());
     }
     default: {
       break;
@@ -357,7 +369,6 @@ const modalEvents = (event) => {
       setToastMessage("error", "امتیاز کتاب باید بین 1 تا 5 باشد");
     }
   }
-
   // Toggle Icon Hide And Show Password
   if (
     event.target.classList[1] === "form-login__icon--toggle" ||
@@ -374,6 +385,11 @@ const modalEvents = (event) => {
     } else {
       validateLoginAndSignUp("login");
     }
+  }
+  // LogOut
+  if(event.target.classList[0] === "modal-screen__logout-btn"){
+    console.log("logOut");
+    
   }
 };
 const toggleIconHideAndShowPassword = (event) => {
@@ -679,6 +695,7 @@ const setToastMessage = (type, text) => {
 };
 //* /////////////// Events ////////////////////
 addBookBtn.addEventListener("click", () => showModal("addBook"));
+logOutBtn.addEventListener("click", () => showModal("logOut"));
 modal.addEventListener("click", modalEvents);
 if (formTitle && formAuthor) {
   formTitle.addEventListener("keyup", formTitleAndFormAuthorLength);

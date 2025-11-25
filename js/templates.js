@@ -43,6 +43,13 @@ const templates = {
         آیا مطمئن هستید که می‌خواهید این کتاب را حذف کنید؟
       </p>
     `
+  },  
+  temLogOut(){
+    return`
+      <p class="modal-screen__body-text">
+        آیا مطمئن هستید که می‌خواهید از حساب خود خارج شوید؟
+      </p>
+    `
   },
   temSignUp(){
     return`

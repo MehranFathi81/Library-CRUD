@@ -498,6 +498,7 @@ form > div {
 }
 .modal-screen__save-btn,
 .modal-screen__del-btn,
+.modal-screen__logout-btn,
 .modal-screen__cancel-btn,
 .modal-screen__login-btn {
   width: 48.5%;
@@ -517,10 +518,12 @@ form > div {
 .modal-screen__login-btn:hover {
   background: #059669;
 }
-.modal-screen__del-btn {
+.modal-screen__del-btn,
+.modal-screen__logout-btn{
   background: #ef4444;
 }
-.modal-screen__del-btn:hover {
+.modal-screen__del-btn:hover,
+.modal-screen__logout-btn:hover{
   background: #dc2626;
 }
 /* --------------------- Toast Container--------------------- **/
@@ -678,6 +681,7 @@ form > div {
   /* --------------------- Modal Screen Btns --------------------- **/
   .modal-screen__save-btn,
   .modal-screen__del-btn,
+  .modal-screen__logout-btn,
   .modal-screen__cancel-btn,
   .modal-screen__login-btn {
     height: 4rem;
