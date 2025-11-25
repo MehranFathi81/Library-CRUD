@@ -78,7 +78,9 @@ const getDataFromApi = async () => {
 
     updateBookCards(user.books);
   } catch (err) {
-    setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
+    if(username && token){
+      setToastMessage("error", "خطا در بارگذاری کتاب‌ها");
+    }
   }
 }
 getDataFromApi()
