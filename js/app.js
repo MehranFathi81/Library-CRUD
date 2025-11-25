@@ -477,21 +477,17 @@ const validateLoginAndSignUp = (modalTypeStr) => {
       }
     }
     if (userIsLogin) {
-      setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید");
       localStorage.setItem("token", generateToken());
       localStorage.setItem("username", formUsernameValue);
       headerBottomWrapper.classList.remove("hidden");
       headerCenterWrapper.classList.remove("hidden");
       mainAuthRequired.classList.add("hidden");
       modal.classList.add("hidden");
-      setTimeout(() => {
-        location.reload();
-      }, 1500);
+      location.reload();
     } else {
       setToastMessage("error", "نام کاربری یا رمز عبور اشتباه است");
     }
   }
-  return true;
   function generateToken() {
     return (
       Date.now().toString(36) + Math.random().toString(36).substring(2, 10)
@@ -503,7 +499,6 @@ const validateLoginAndSignUp = (modalTypeStr) => {
       password: formPasswordValue,
       email: formEmailValue,
       phone: formPhoneValue,
-      token: localStorage.getItem("token"),
       books: [],
     };
     const data = await fetch(baseUrl, {
@@ -531,16 +526,13 @@ const validateLoginAndSignUp = (modalTypeStr) => {
       });
 
       if (res.ok) {
-        setToastMessage("success", "به کتابخانه شخصی خود خوش آمدید");
         localStorage.setItem("token", generateToken());
         localStorage.setItem("username", formUsernameValue);
         headerBottomWrapper.classList.remove("hidden");
         headerCenterWrapper.classList.remove("hidden");
         mainAuthRequired.classList.add("hidden");
         modal.classList.add("hidden");
-        setTimeout(() => {
-          location.reload();
-        }, 1500);
+        location.reload();
       } else {
         setToastMessage("error", "مشکلی در ارتباط با سرور رخ داد");
       }
